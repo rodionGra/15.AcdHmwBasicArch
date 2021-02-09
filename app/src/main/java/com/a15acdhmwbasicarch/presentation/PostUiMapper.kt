@@ -7,8 +7,8 @@ import com.a15acdhmwbasicarch.domain.UserPostDomainModel
 import com.a15acdhmwbasicarch.domain.UserStatus
 
 class PostUiMapper {
-    fun map(domainListModel: Result<List<UserPostDomainModel>, UserPostError>): Result<List<PostUiModel>, UserPostError> {
-        return domainListModel.mapSuccess {
+    fun map(domainListModel: List<UserPostDomainModel>?): List<PostUiModel>? {
+        return domainListModel?.let {
             getPostUiModels(it)
         }
     }
