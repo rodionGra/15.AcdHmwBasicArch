@@ -6,8 +6,10 @@ import com.a15acdhmwbasicarch.Result
 import com.a15acdhmwbasicarch.UserPostError
 import com.a15acdhmwbasicarch.domain.GetPostUseCase
 import com.a15acdhmwbasicarch.threading.CancelableOperation
+import com.a15acdhmwbasicarch.threading.Multithreading
 
 class InfoPresenter(
+    private val multithreading: Multithreading,
     private val getPostUseCase: GetPostUseCase
 ) {
     private var view: InfoView? = null
@@ -15,8 +17,7 @@ class InfoPresenter(
 
     fun attachView(infoView: InfoView) {
         view = infoView
-
-        cancelableOperation = getPostUseCase.funInvoke().postOnMainThread(::showResult)
+        getPosts()
     }
 
     fun detachView() {
@@ -24,7 +25,19 @@ class InfoPresenter(
         cancelableOperation?.cancel()
     }
 
+    private fun getPosts() {
+        multithreading.async<Result<List<PostUiModel>, UserPostError>> {
+            val result = getPostUseCase.funInvoke()
+            return@async if (result != null) {
+                Result.success(result)
+            } else {
+                Result.error(UserPostError.MAIN_USER_POST_LIST_NOT_LOADED)
+            }
+        }.postOnMainThread(::showResult)
+    }
+
     private fun showResult(result: Result<List<PostUiModel>, UserPostError>) {
+        Log.d("wtf", "result -> $result")
         if (result.isError) {
             view?.showError(result.errorResult)
         } else {

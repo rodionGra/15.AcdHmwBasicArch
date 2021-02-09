@@ -14,28 +14,38 @@ import com.a15acdhmwbasicarch.domain.UserStatus
 }*/
 
 class DomainUserPostMapper {
-    fun map(postResponse: Result<List<UserPostResponse>, UserPostError>, statusList: Set<StatusUser>): Result<List<UserPostDomainModel>, UserPostError> {
-        return postResponse.mapSuccess { listOfUserPostResponse ->
-            listOfUserPostResponse.map { userPostResponse ->
+    fun map(
+        postResponse: List<UserPostResponse>?,
+        statusList: Set<StatusUser>
+    ): List<UserPostDomainModel>? {
+        return postResponse?.let {
+            val resultList = mutableListOf<UserPostDomainModel>()
+            postResponse.forEach { userPostResponse ->
                 if (statusList.any { it.idUser == userPostResponse.userId }) {
-                    val status = statusList.findLast { it.idUser == userPostResponse.userId }!!.status
-                    UserPostDomainModel(
+                    val status =
+                        statusList.findLast { it.idUser == userPostResponse.userId }!!.status
+                    resultList.add(
+                        UserPostDomainModel(
                             userId = userPostResponse.userId,
                             id = userPostResponse.id,
                             title = userPostResponse.title,
                             body = userPostResponse.body,
                             status = status
+                        )
                     )
                 } else {
-                    UserPostDomainModel(
+                    resultList.add(
+                        UserPostDomainModel(
                             userId = userPostResponse.userId,
                             id = userPostResponse.id,
                             title = userPostResponse.title,
                             body = userPostResponse.body,
                             status = UserStatus.STANDARD
+                        )
                     )
                 }
             }
+            resultList
         }
     }
 }

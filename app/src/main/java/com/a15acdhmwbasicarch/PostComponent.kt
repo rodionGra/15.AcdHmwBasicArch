@@ -14,22 +14,21 @@ object PostComponent {
     fun createPresenter(context: Context): InfoPresenter {
 
         val infoUserPostRepository = InfoUserPostRepository(
-            multithreading = Multithreading(context),
-                infoApiService = createService(),
-                domainUserPostMapper = DomainUserPostMapper(),
-                postStatusLocalDataSource = UserStatusLocalDataSource()
+            infoApiService = createService(),
+            domainUserPostMapper = DomainUserPostMapper(),
+            postStatusLocalDataSource = UserStatusLocalDataSource()
         )
 
         val postUseCase = GetPostUseCase(infoUserPostRepository, PostUiMapper())
 
-        return InfoPresenter(postUseCase)
+        return InfoPresenter(Multithreading(context), postUseCase)
     }
 
     private fun createService(): InfoApiService {
         return Retrofit.Builder()
-                .baseUrl("https://jsonplaceholder.typicode.com/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
-                .create(InfoApiService::class.java)
+            .baseUrl("https://jsonplaceholder.typicode.com/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(InfoApiService::class.java)
     }
 }

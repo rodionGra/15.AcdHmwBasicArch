@@ -7,10 +7,9 @@ import com.a15acdhmwbasicarch.presentation.PostUiModel
 import com.a15acdhmwbasicarch.threading.AsyncOperation
 import com.a15acdhmwbasicarch.Result
 
-class GetPostUseCase(private val postRepository: InfoUserPostRepository,
-                     private val postUiMapper: PostUiMapper
+class GetPostUseCase(
+    private val postRepository: InfoUserPostRepository,
+    private val postUiMapper: PostUiMapper
 ) {
-    fun funInvoke(): AsyncOperation<Result< List<PostUiModel>, UserPostError >> {
-        return postRepository.getInfo().map(postUiMapper::map)
-    }
+    fun funInvoke(): List<PostUiModel>? = postUiMapper.map(postRepository.getInfo())
 }
