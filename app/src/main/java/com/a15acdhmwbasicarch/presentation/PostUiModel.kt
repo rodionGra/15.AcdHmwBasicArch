@@ -1,24 +1,34 @@
 package com.a15acdhmwbasicarch.presentation
 
-sealed class PostUiModel {}
+import androidx.annotation.ColorInt
+
+sealed class PostUiModel() {abstract val postId: Int}
 
 data class StandardPostUiModel(
+        override val postId: Int,
         val userId: Int,
         val title: String,
-        val body: String,
+        val body: String
 ): PostUiModel()
 
 data class WarningUserPostUiModel(
+        override val postId : Int,
         val userId: Int,
         val title: String,
         val body: String,
-        val colorInt: Int
+        val colors: PostColors,
+        val warningText: String
 ): PostUiModel()
 
 data class BannedUserPostUiModel(
-        val userId: Int
+        override val postId: Int,
+        val banText: String
 ): PostUiModel()
 
-data class ErrorUiModel(
+/*data class ErrorUiModel(
         val errorText: String
-): PostUiModel()
+): PostUiModel()*/
+
+data class PostColors(
+        @ColorInt val backgroundColor: Int
+)

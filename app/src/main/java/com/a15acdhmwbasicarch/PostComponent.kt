@@ -15,11 +15,10 @@ object PostComponent {
 
         val infoUserPostRepository = InfoUserPostRepository(
             infoApiService = createService(),
-            domainUserPostMapper = DomainUserPostMapper(),
-            postStatusLocalDataSource = UserStatusLocalDataSource()
+            domainUserPostMapper = DomainUserPostMapper(UserStatusLocalDataSource().getSetOfStatusUser()),
         )
 
-        val postUseCase = GetPostUseCase(infoUserPostRepository, PostUiMapper())
+        val postUseCase = GetPostUseCase(infoUserPostRepository, PostUiMapper(ResourceRepository(context)))
 
         return InfoPresenter(Multithreading(context), postUseCase)
     }

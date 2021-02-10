@@ -27,7 +27,7 @@ class InfoPresenter(
 
     private fun getPosts() {
         multithreading.async<Result<List<PostUiModel>, UserPostError>> {
-            val result = getPostUseCase.funInvoke()
+            val result : List<PostUiModel>? = getPostUseCase.invoke()
             return@async if (result != null) {
                 Result.success(result)
             } else {

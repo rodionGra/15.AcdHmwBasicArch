@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">15.AcdHmwBasicArch</string>
+    <string name="warning">Warning</string>
+    <string name="ban">Тут міг бути пост юзера %1$d, але він забанений</string>
 </resources>

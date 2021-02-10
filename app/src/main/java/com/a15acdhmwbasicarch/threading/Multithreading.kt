@@ -14,9 +14,11 @@ class Multithreading(context: Context) {
         return AsyncOperation(
             operation = operation,
             mainHandler = mainHandler,
-            threadCreation = {Thread(it).apply(Thread::start)}
+            threadCreation = ::createTread
+            //threadCreation = { Thread(it).apply(Thread::start) }
         )
     }
+
     //todo clean up
     //создає нову треду
     private fun createTread(runnable: Runnable): Thread {

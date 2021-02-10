@@ -11,5 +11,5 @@ class GetPostUseCase(
     private val postRepository: InfoUserPostRepository,
     private val postUiMapper: PostUiMapper
 ) {
-    fun funInvoke(): List<PostUiModel>? = postUiMapper.map(postRepository.getInfo())
+    fun invoke(): List<PostUiModel>? = postUiMapper.map(postRepository.getInfo())
 }
