@@ -1,17 +1,14 @@
-package com.a15acdhmwbasicarch
+package com.a15acdhmwbasicarch.presentation
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.a15acdhmwbasicarch.R
 import com.a15acdhmwbasicarch.databinding.BannedPostItemRecycleViewBinding
 import com.a15acdhmwbasicarch.databinding.StandardPostItemRecycleViewBinding
-import com.a15acdhmwbasicarch.presentation.BannedUserPostUiModel
-import com.a15acdhmwbasicarch.presentation.PostUiModel
-import com.a15acdhmwbasicarch.presentation.StandardPostUiModel
 
 
 class PostUiModelDiffCallbackItem : DiffUtil.ItemCallback<PostUiModel>() {

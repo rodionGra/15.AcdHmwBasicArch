@@ -1,6 +1,5 @@
-package com.a15acdhmwbasicarch
+package com.a15acdhmwbasicarch.data
 
-import com.a15acdhmwbasicarch.data.DomainUserPostMapper
 import com.a15acdhmwbasicarch.domain.UserPostDomainModel
 
 class InfoUserPostRepository(

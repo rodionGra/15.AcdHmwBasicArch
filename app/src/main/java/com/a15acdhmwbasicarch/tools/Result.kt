@@ -1,4 +1,4 @@
-package com.a15acdhmwbasicarch
+package com.a15acdhmwbasicarch.tools
 /**Приватний конструктор, щоб можна було створити або з норм результатом або з помилкою*/
 
 class Result<T, E> private constructor(
