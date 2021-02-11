@@ -49,9 +49,10 @@ class PostUiMapper(private val resourceRepository: ResourceRepository) {
     }
 
     private fun getUserPostUiModelBanned(userPostDomainModel: UserPostDomainModel): BannedUserPostUiModel {
-        val banText = resourceRepository.getString(R.string.ban)
-        val stringWithUserId: String = String.format(banText, userPostDomainModel.userId)
-        return BannedUserPostUiModel(postId = userPostDomainModel.id, banText = stringWithUserId)
+        return BannedUserPostUiModel(
+            postId = userPostDomainModel.id,
+            userId = userPostDomainModel.userId
+        )
     }
 
 }

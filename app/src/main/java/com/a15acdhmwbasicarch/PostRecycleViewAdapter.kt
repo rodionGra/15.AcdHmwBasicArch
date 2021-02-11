@@ -3,6 +3,7 @@ package com.a15acdhmwbasicarch
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -12,20 +13,17 @@ import com.a15acdhmwbasicarch.presentation.BannedUserPostUiModel
 import com.a15acdhmwbasicarch.presentation.PostUiModel
 import com.a15acdhmwbasicarch.presentation.StandardPostUiModel
 
-class PostUiModelDiffCallbackItem : DiffUtil.ItemCallback<PostUiModel>() {
 
-    override fun areItemsTheSame(oldItem: PostUiModel, newItem: PostUiModel): Boolean {
-        return oldItem.postId == newItem.postId
-    }
+class PostUiModelDiffCallbackItem : DiffUtil.ItemCallback<PostUiModel>() {
+    override fun areItemsTheSame(oldItem: PostUiModel, newItem: PostUiModel) = oldItem.postId == newItem.postId
 
     override fun areContentsTheSame(oldItem: PostUiModel, newItem: PostUiModel) = oldItem == newItem
 }
 
-class PostRecycleViewAdapter : ListAdapter<PostUiModel, RecyclerView.ViewHolder>(PostUiModelDiffCallbackItem()) {
+class PostRecycleViewAdapter :
+    ListAdapter<PostUiModel, RecyclerView.ViewHolder>(PostUiModelDiffCallbackItem()) {
 
-    enum class ViewType {
-        STANDARD, BANNED
-    }
+    enum class ViewType { STANDARD, BANNED }
 
     override fun getItemViewType(position: Int): Int {
         return when (getItem(position)) {
@@ -61,12 +59,27 @@ class PostRecycleViewAdapter : ListAdapter<PostUiModel, RecyclerView.ViewHolder>
 
     class ViewHolderForStandardPost(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val binding = StandardPostItemRecycleViewBinding.bind(itemView)
+
         fun bind(post: StandardPostUiModel) {
+            val strUserId =
+                String.format(itemView.resources.getString(R.string.user_id), post.userId)
+
             binding.apply {
-                tvUserId.text = post.userId
+                tvUserId.text = strUserId
                 tvTitle.text = post.title
                 tvBody.text = post.body
-                //todo
+            }
+
+            if (post.hasWarning) {
+                binding.apply {
+                    tvWarningText.visibility = View.VISIBLE
+                    standardPostItemContainer.setBackgroundColor(post.colors.backgroundColor)
+                }
+            } else {
+                binding.apply {
+                    tvWarningText.visibility = View.GONE
+                    standardPostItemContainer.setBackgroundColor(post.colors.backgroundColor)
+                }
             }
         }
     }
@@ -74,7 +87,9 @@ class PostRecycleViewAdapter : ListAdapter<PostUiModel, RecyclerView.ViewHolder>
     class ViewHolderForBannedPost(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val binding = BannedPostItemRecycleViewBinding.bind(itemView)
         fun bind(post: BannedUserPostUiModel) {
-            binding.apply { tvBannedText.text = post.banText }
+            val stringWithUserId: String =
+                String.format(itemView.resources.getString(R.string.ban), post.userId)
+            binding.apply { tvBannedText.text = stringWithUserId }
         }
     }
 

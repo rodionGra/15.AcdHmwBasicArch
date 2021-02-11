@@ -13,16 +13,9 @@ data class StandardPostUiModel(
         val colors: PostColors
 ): PostUiModel()
 
-/*data class WarningUserPostUiModel(
-        override val postId : Int,
-        val userId: Int,
-        val title: String,
-        val body: String,
-): PostUiModel()*/
-
 data class BannedUserPostUiModel(
         override val postId: Int,
-        val banText: String
+        val userId: Int
 ): PostUiModel()
 
 data class PostColors(

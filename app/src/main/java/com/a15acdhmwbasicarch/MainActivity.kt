@@ -4,50 +4,66 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.ProgressBar
-import android.widget.TextView
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.a15acdhmwbasicarch.presentation.PostUiModel
-import com.a15acdhmwbasicarch.PostComponent
 import com.a15acdhmwbasicarch.databinding.ActivityMainBinding
-import com.a15acdhmwbasicarch.presentation.BannedUserPostUiModel
-import org.w3c.dom.Text
+import com.a15acdhmwbasicarch.presentation.InfoPresenter
 
 interface InfoView {
-    fun showInfo(info: List<PostUiModel>)
+    fun showUsersPost(info: List<PostUiModel>)
     fun showError(error: UserPostError)
 }
 
-class MainActivity : AppCompatActivity(R.layout.activity_main), InfoView {
+class MainActivity : AppCompatActivity(), InfoView {
 
-    private val binding : ActivityMainBinding by lazy { ActivityMainBinding.inflate(layoutInflater) }
-    private val adapter = PostRecycleViewAdapter()
+    private lateinit var binding: ActivityMainBinding
+    private val postRecycleViewAdapter = PostRecycleViewAdapter()
+
+    private lateinit var presenter: InfoPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val presentor = PostComponent.createPresenter(this)
-        presentor.attachView(this)
+
+        setupBinding()
         setupRecycleView()
-        adapter.notifyDataSetChanged()
+
+        presenter = PostComponent.createPresenter(this)
+        presenter.attachView(this)
     }
 
-    override fun showInfo(info: List<PostUiModel>) {
+    override fun onDestroy() {
+        super.onDestroy()
+        presenter.detachView()
+    }
+
+    override fun showUsersPost(info: List<PostUiModel>) {
         Log.d("showInfoTag", "$info")
-        findViewById<ProgressBar>(R.id.progress).visibility = View.GONE
-        //findViewById<TextView>(R.id.tv_hello).text = info.toString()
-        findViewById<TextView>(R.id.tv_hello).text = "showInfo"
-        //adapter.submitList(info)
-        //adapter.notifyDataSetChanged()
+        binding.progress.visibility = View.GONE
+        postRecycleViewAdapter.submitList(info)
     }
 
     override fun showError(error: UserPostError) {
-        findViewById<TextView>(R.id.tv_hello).text = error.toString()
+        binding.apply {
+            progress.visibility = View.GONE
+            tvError.visibility = View.VISIBLE
+            tvError.text = error.toString()
+        }
     }
 
-    private fun setupRecycleView(){
-        binding.rvPosts.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        binding.rvPosts.adapter = adapter
-        adapter.submitList(listOf(BannedUserPostUiModel(100, "sdfsdfsdf")))
+    private fun setupBinding() {
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+    }
+
+    private fun setupRecycleView() {
+        binding.rvPosts.apply {
+            layoutManager =
+                LinearLayoutManager(this@MainActivity, LinearLayoutManager.VERTICAL, false)
+            adapter = postRecycleViewAdapter
+            addItemDecoration(DividerItemDecoration(this@MainActivity, RecyclerView.VERTICAL))
+        }
     }
 }

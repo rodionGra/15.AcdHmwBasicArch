@@ -41,7 +41,7 @@ class InfoPresenter(
         if (result.isError) {
             view?.showError(result.errorResult)
         } else {
-            view?.showInfo(result.successResult)
+            view?.showUsersPost(result.successResult)
         }
     }
 }
