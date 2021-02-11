@@ -4,4 +4,5 @@
     <string name="ban">Тут міг бути пост юзера %1$d, але він забанений</string>
     <string name="user_id">User id : %1$s</string>
     <string name="with_warning">With warning</string>
+    <string name="error_text">Posts can`t be loaded</string>
 </resources>

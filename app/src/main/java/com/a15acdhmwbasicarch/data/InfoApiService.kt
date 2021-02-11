@@ -5,7 +5,6 @@ import retrofit2.Call
 import retrofit2.http.GET
 
 interface InfoApiService {
-    //TODO ASK ABOUT "/"
     @GET("/posts")
     fun getPostsList() : Call<List<UserPostResponse>>
 }

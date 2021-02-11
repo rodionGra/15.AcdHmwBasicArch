@@ -1,11 +1,11 @@
 package com.a15acdhmwbasicarch.presentation
 
 import com.a15acdhmwbasicarch.R
-import com.a15acdhmwbasicarch.ResourceRepository
+import com.a15acdhmwbasicarch.AndroidResourceRepository
 import com.a15acdhmwbasicarch.domain.UserPostDomainModel
 import com.a15acdhmwbasicarch.domain.UserStatus
 
-class PostUiMapper(private val resourceRepository: ResourceRepository) {
+class PostUiMapper(private val resourceRepository: AndroidResourceRepository) {
     fun map(domainListModel: List<UserPostDomainModel>?): List<PostUiModel>? {
         return domainListModel?.let(this::getPostUiModels)
     }

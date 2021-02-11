@@ -2,11 +2,11 @@ package com.a15acdhmwbasicarch.presentation
 
 import android.util.Log
 import com.a15acdhmwbasicarch.InfoView
-import com.a15acdhmwbasicarch.Result
-import com.a15acdhmwbasicarch.UserPostError
+import com.a15acdhmwbasicarch.R
 import com.a15acdhmwbasicarch.domain.GetPostUseCase
 import com.a15acdhmwbasicarch.threading.CancelableOperation
 import com.a15acdhmwbasicarch.threading.Multithreading
+import com.a15acdhmwbasicarch.tools.Result
 
 class InfoPresenter(
     private val multithreading: Multithreading,
@@ -26,18 +26,18 @@ class InfoPresenter(
     }
 
     private fun getPosts() {
-        multithreading.async<Result<List<PostUiModel>, UserPostError>> {
-            val result : List<PostUiModel>? = getPostUseCase.invoke()
+        multithreading.async<Result<List<PostUiModel>, Int>> {
+            val result: List<PostUiModel>? = getPostUseCase.invoke()
             return@async if (result != null) {
                 Result.success(result)
             } else {
-                Result.error(UserPostError.MAIN_USER_POST_LIST_NOT_LOADED)
+                Result.error(R.string.error_text)
             }
         }.postOnMainThread(::showResult)
     }
 
-    private fun showResult(result: Result<List<PostUiModel>, UserPostError>) {
-        Log.d("wtf", "result -> $result")
+    private fun showResult(result: Result<List<PostUiModel>, Int>) {
+        Log.d("showResult", "Result -> $result")
         if (result.isError) {
             view?.showError(result.errorResult)
         } else {

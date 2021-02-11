@@ -2,7 +2,7 @@ package com.a15acdhmwbasicarch.data
 
 import com.a15acdhmwbasicarch.domain.UserStatus
 
-class UserStatusLocalDataSource() {
+class UserStatusLocalDataSource {
 
     private val statusSet : MutableSet<StatusUser> = mutableSetOf()
 

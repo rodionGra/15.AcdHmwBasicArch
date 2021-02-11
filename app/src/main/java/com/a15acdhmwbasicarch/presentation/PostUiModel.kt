@@ -2,7 +2,7 @@ package com.a15acdhmwbasicarch.presentation
 
 import androidx.annotation.ColorInt
 
-sealed class PostUiModel() {abstract val postId: Int}
+sealed class PostUiModel {abstract val postId: Int}
 
 data class StandardPostUiModel(
         override val postId: Int,

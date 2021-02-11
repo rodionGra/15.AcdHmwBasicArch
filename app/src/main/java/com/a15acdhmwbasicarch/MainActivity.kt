@@ -10,28 +10,25 @@ import androidx.recyclerview.widget.RecyclerView
 import com.a15acdhmwbasicarch.presentation.PostUiModel
 import com.a15acdhmwbasicarch.databinding.ActivityMainBinding
 import com.a15acdhmwbasicarch.presentation.InfoPresenter
+import com.a15acdhmwbasicarch.presentation.PostRecycleViewAdapter
 
 interface InfoView {
     fun showUsersPost(info: List<PostUiModel>)
-    fun showError(error: UserPostError)
+    fun showError(error: Int)
 }
 
 class MainActivity : AppCompatActivity(), InfoView {
 
     private lateinit var binding: ActivityMainBinding
     private val postRecycleViewAdapter = PostRecycleViewAdapter()
-
     private lateinit var presenter: InfoPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-
         setupBinding()
         setupRecycleView()
-
-        presenter = PostComponent.createPresenter(this)
-        presenter.attachView(this)
+        setupPresenter()
     }
 
     override fun onDestroy() {
@@ -45,11 +42,12 @@ class MainActivity : AppCompatActivity(), InfoView {
         postRecycleViewAdapter.submitList(info)
     }
 
-    override fun showError(error: UserPostError) {
+    override fun showError(error: Int) {
+        finish()
         binding.apply {
             progress.visibility = View.GONE
             tvError.visibility = View.VISIBLE
-            tvError.text = error.toString()
+            tvError.text = resources.getString(error)
         }
     }
 
@@ -65,5 +63,10 @@ class MainActivity : AppCompatActivity(), InfoView {
             adapter = postRecycleViewAdapter
             addItemDecoration(DividerItemDecoration(this@MainActivity, RecyclerView.VERTICAL))
         }
+    }
+
+    private fun setupPresenter() {
+        presenter = PostComponent.createPresenter(this)
+        presenter.attachView(this)
     }
 }
