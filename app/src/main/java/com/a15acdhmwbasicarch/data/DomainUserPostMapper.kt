@@ -10,18 +10,15 @@ class DomainUserPostMapper(private val statusList: Set<StatusUser>) {
         return postResponse?.let {
             val resultList = mutableListOf<UserPostDomainModel>()
             postResponse.forEach { userPostResponse ->
-                if (statusList.any { it.idUser == userPostResponse.userId }) {
-                    val status = statusList.find { it.idUser == userPostResponse.userId }?.status
-                        ?: UserStatus.STANDARD
-                    resultList.add(
-                        getUserPostDomainModel(userPostResponse, status)
-                    )
-                } else {
-                    resultList.add(getUserPostDomainModel(userPostResponse))
-                }
+                val userStatusById = getStatusFromStatusSet(userPostResponse.userId)
+                resultList.add(getUserPostDomainModel(userPostResponse, userStatusById))
             }
             resultList
         }
+    }
+
+    private fun getStatusFromStatusSet(userId: Int): UserStatus {
+        return statusList.find { it.idUser == userId }?.status ?: UserStatus.STANDARD
     }
 
     private fun getUserPostDomainModel(

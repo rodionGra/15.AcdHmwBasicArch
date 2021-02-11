@@ -13,29 +13,38 @@ class PostUiMapper(private val resourceRepository: ResourceRepository) {
     private fun getPostUiModels(userPostDomainModel: List<UserPostDomainModel>): List<PostUiModel> {
         return userPostDomainModel.map {
             when (it.status) {
+                UserStatus.STANDARD -> {
+                    getStandardPostUiModel(it)
+                }
                 UserStatus.WITH_WARNING -> {
-                    getUserPostUiModelWithWarning(it)
+                    getStandardPostUiModel(it)
                 }
                 UserStatus.BANNED -> {
                     getUserPostUiModelBanned(it)
-                }
-                UserStatus.STANDARD -> {
-                    StandardPostUiModel(postId = it.id, userId = it.userId, title = it.title, body = it.body)
                 }
             }
         }
     }
 
-    private fun getUserPostUiModelWithWarning(userPostDomainModel: UserPostDomainModel): WarningUserPostUiModel {
-        val backgroundColor = PostColors(resourceRepository.getColor(R.color.red))
-        val warningText = resourceRepository.getString(R.string.warning)
-        return WarningUserPostUiModel(
+    private fun getStandardPostUiModel(userPostDomainModel: UserPostDomainModel): StandardPostUiModel {
+        val (backgroundColor, hasWarning) = when (userPostDomainModel.status) {
+            UserStatus.WITH_WARNING -> Pair(
+                PostColors(resourceRepository.getColor(R.color.red)),
+                true
+            )
+            else -> Pair(
+                PostColors(resourceRepository.getColor(R.color.white)),
+                false
+            )
+        }
+
+        return StandardPostUiModel(
             postId = userPostDomainModel.id,
-            userId = userPostDomainModel.userId,
+            userId = userPostDomainModel.userId.toString(),
             title = userPostDomainModel.title,
             body = userPostDomainModel.body,
-            colors = backgroundColor,
-            warningText = warningText
+            hasWarning = hasWarning,
+            colors = backgroundColor
         )
     }
 

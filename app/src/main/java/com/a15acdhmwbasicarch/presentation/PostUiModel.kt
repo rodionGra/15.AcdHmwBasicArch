@@ -6,28 +6,24 @@ sealed class PostUiModel() {abstract val postId: Int}
 
 data class StandardPostUiModel(
         override val postId: Int,
-        val userId: Int,
+        val userId: String,
         val title: String,
-        val body: String
+        val body: String,
+        val hasWarning: Boolean,
+        val colors: PostColors
 ): PostUiModel()
 
-data class WarningUserPostUiModel(
+/*data class WarningUserPostUiModel(
         override val postId : Int,
         val userId: Int,
         val title: String,
         val body: String,
-        val colors: PostColors,
-        val warningText: String
-): PostUiModel()
+): PostUiModel()*/
 
 data class BannedUserPostUiModel(
         override val postId: Int,
         val banText: String
 ): PostUiModel()
-
-/*data class ErrorUiModel(
-        val errorText: String
-): PostUiModel()*/
 
 data class PostColors(
         @ColorInt val backgroundColor: Int
