@@ -12,7 +12,7 @@ class InfoPresenter(
     private val multithreading: Multithreading,
     private val getPostUseCase: GetPostUseCase
 ) {
-    private var view: InfoView? = null
+    /*private var view: InfoView? = null
     private var cancelableOperation: CancelableOperation? = null
 
     fun attachView(infoView: InfoView) {
@@ -43,5 +43,5 @@ class InfoPresenter(
         } else {
             view?.showUsersPost(result.successResult)
         }
-    }
+    }*/
 }

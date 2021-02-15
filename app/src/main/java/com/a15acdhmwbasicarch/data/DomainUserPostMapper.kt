@@ -1,7 +1,8 @@
 package com.a15acdhmwbasicarch.data
 
+import com.a15acdhmwbasicarch.datasource.model.UserPostResponse
 import com.a15acdhmwbasicarch.domain.UserPostDomainModel
-import com.a15acdhmwbasicarch.domain.UserStatus
+import com.a15acdhmwbasicarch.domain.Status
 
 class DomainUserPostMapper(private val statusList: Set<StatusUser>) {
     fun map(
@@ -17,13 +18,13 @@ class DomainUserPostMapper(private val statusList: Set<StatusUser>) {
         }
     }
 
-    private fun getStatusFromStatusSet(userId: Int): UserStatus {
-        return statusList.find { it.idUser == userId }?.status ?: UserStatus.STANDARD
+    private fun getStatusFromStatusSet(userId: Int): Status {
+        return statusList.find { it.idUser == userId }?.status ?: Status.STANDARD
     }
 
     private fun getUserPostDomainModel(
         userPostResponse: UserPostResponse,
-        status: UserStatus = UserStatus.STANDARD
+        status: Status = Status.STANDARD
     ): UserPostDomainModel {
         return UserPostDomainModel(
             userId = userPostResponse.userId,

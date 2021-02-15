@@ -5,5 +5,5 @@ data class UserPostDomainModel(
         val id: Int,
         val title: String,
         val body: String,
-        val status: UserStatus
+        val status: Status
 )

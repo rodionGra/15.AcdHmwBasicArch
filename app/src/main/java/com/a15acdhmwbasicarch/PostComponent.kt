@@ -2,9 +2,10 @@ package com.a15acdhmwbasicarch
 
 import android.content.Context
 import com.a15acdhmwbasicarch.data.DomainUserPostMapper
-import com.a15acdhmwbasicarch.data.InfoApiService
-import com.a15acdhmwbasicarch.data.InfoUserPostRepository
-import com.a15acdhmwbasicarch.data.UserStatusLocalDataSource
+import com.a15acdhmwbasicarch.datasource.api.InfoApiService
+import com.a15acdhmwbasicarch.data.PostsInfoRepository
+import com.a15acdhmwbasicarch.datasource.PostsCacheDataSource
+import com.a15acdhmwbasicarch.datasource.UserStatusLocalDataSource
 import com.a15acdhmwbasicarch.domain.GetPostUseCase
 import com.a15acdhmwbasicarch.presentation.InfoPresenter
 import com.a15acdhmwbasicarch.presentation.PostUiMapper
@@ -16,9 +17,10 @@ import retrofit2.converter.gson.GsonConverterFactory
 object PostComponent {
     fun createPresenter(context: Context): InfoPresenter {
 
-        val infoUserPostRepository = InfoUserPostRepository(
+        val infoUserPostRepository = PostsInfoRepository(
             infoApiService = createService(),
             domainUserPostMapper = DomainUserPostMapper(UserStatusLocalDataSource().getSetOfStatusUser()),
+            postsCacheDataSource = PostsCacheDataSource
         )
 
         val postUseCase = GetPostUseCase(

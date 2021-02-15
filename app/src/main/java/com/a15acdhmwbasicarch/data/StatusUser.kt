@@ -1,9 +1,8 @@
 package com.a15acdhmwbasicarch.data
 
-import com.a15acdhmwbasicarch.domain.UserStatus
+import com.a15acdhmwbasicarch.domain.Status
 
 data class StatusUser(
         val idUser: Int,
-        // 0 - normal, 1 - warning, 2 - blocked
-        val status: UserStatus
+        val status: Status
 )

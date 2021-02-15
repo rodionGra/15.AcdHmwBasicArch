@@ -1,15 +1,16 @@
-package com.a15acdhmwbasicarch.data
+package com.a15acdhmwbasicarch.datasource
 
-import com.a15acdhmwbasicarch.domain.UserStatus
+import com.a15acdhmwbasicarch.data.StatusUser
+import com.a15acdhmwbasicarch.domain.Status
 
 class UserStatusLocalDataSource {
 
     private val statusSet : MutableSet<StatusUser> = mutableSetOf()
 
     private fun setupHardCode() {
-        statusSet.add(StatusUser(3, UserStatus.WITH_WARNING))
-        statusSet.add(StatusUser(4, UserStatus.WITH_WARNING))
-        statusSet.add(StatusUser(7, UserStatus.BANNED))
+        statusSet.add(StatusUser(3, Status.WITH_WARNING))
+        statusSet.add(StatusUser(4, Status.WITH_WARNING))
+        statusSet.add(StatusUser(7, Status.BANNED))
     }
 
     fun addStatusUser(statusUser: StatusUser) = statusSet.add(statusUser)

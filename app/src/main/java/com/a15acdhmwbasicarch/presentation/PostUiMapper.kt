@@ -3,7 +3,7 @@ package com.a15acdhmwbasicarch.presentation
 import com.a15acdhmwbasicarch.R
 import com.a15acdhmwbasicarch.AndroidResourceRepository
 import com.a15acdhmwbasicarch.domain.UserPostDomainModel
-import com.a15acdhmwbasicarch.domain.UserStatus
+import com.a15acdhmwbasicarch.domain.Status
 
 class PostUiMapper(private val resourceRepository: AndroidResourceRepository) {
     fun map(domainListModel: List<UserPostDomainModel>?): List<PostUiModel>? {
@@ -13,13 +13,13 @@ class PostUiMapper(private val resourceRepository: AndroidResourceRepository) {
     private fun getPostUiModels(userPostDomainModel: List<UserPostDomainModel>): List<PostUiModel> {
         return userPostDomainModel.map {
             when (it.status) {
-                UserStatus.STANDARD -> {
+                Status.STANDARD -> {
                     getStandardPostUiModel(it)
                 }
-                UserStatus.WITH_WARNING -> {
+                Status.WITH_WARNING -> {
                     getStandardPostUiModel(it)
                 }
-                UserStatus.BANNED -> {
+                Status.BANNED -> {
                     getUserPostUiModelBanned(it)
                 }
             }
@@ -28,7 +28,7 @@ class PostUiMapper(private val resourceRepository: AndroidResourceRepository) {
 
     private fun getStandardPostUiModel(userPostDomainModel: UserPostDomainModel): StandardPostUiModel {
         val (backgroundColor, hasWarning) = when (userPostDomainModel.status) {
-            UserStatus.WITH_WARNING -> Pair(
+            Status.WITH_WARNING -> Pair(
                 PostColors(resourceRepository.getColor(R.color.red)),
                 true
             )
