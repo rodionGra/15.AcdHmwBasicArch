@@ -1,5 +1,6 @@
-package com.a15acdhmwbasicarch.data
+package com.a15acdhmwbasicarch.datasource.api
 
+import com.a15acdhmwbasicarch.datasource.model.UserPostResponse
 import retrofit2.Call
 import retrofit2.http.GET
 

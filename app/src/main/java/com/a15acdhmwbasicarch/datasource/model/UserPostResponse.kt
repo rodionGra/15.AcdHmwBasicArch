@@ -1,4 +1,4 @@
-package com.a15acdhmwbasicarch.data
+package com.a15acdhmwbasicarch.datasource.model
 
 import com.google.gson.annotations.SerializedName
 
