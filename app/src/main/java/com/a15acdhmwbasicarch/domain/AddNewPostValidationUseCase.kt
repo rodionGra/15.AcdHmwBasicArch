@@ -1,7 +1,8 @@
-package com.a15acdhmwbasicarch.createNewPostFragment
+package com.a15acdhmwbasicarch.domain
 
 import com.a15acdhmwbasicarch.AndroidResourceRepository
-import com.a15acdhmwbasicarch.data.PostsInfoRepository
+import com.a15acdhmwbasicarch.R
+import com.a15acdhmwbasicarch.domain.model.NewPostModel
 import javax.inject.Inject
 
 const val TITLE_MIN_LENGTH = 2
@@ -10,32 +11,37 @@ const val BODY_MIN_LENGTH = 4
 const val BODY_MAX_LENGTH = 501
 
 class AddNewPostValidationUseCase @Inject constructor(
-    private val postsCacheDataSource: PostsInfoRepository,
     private val resource: AndroidResourceRepository,
+    private val savePostUseCase: SavePostUseCase
 ) {
-    fun execute(title: String, body: String): List<NewPostErrorType> {
-        val listOfError: MutableList<NewPostErrorType> = mutableListOf()
+    fun execute(postForSaving: NewPostModel): Set<NewPostErrorType> {
+        val setOfError: MutableSet<NewPostErrorType> = mutableSetOf()
 
-        if (title.length !in TITLE_MAX_LENGTH downTo TITLE_MIN_LENGTH) {
-            listOfError.add(NewPostErrorType.TITLE_LENGTH_ERROR)
+        if (postForSaving.title.length !in TITLE_MAX_LENGTH downTo TITLE_MIN_LENGTH) {
+            setOfError.add(NewPostErrorType.TITLE_LENGTH_ERROR)
         }
 
-        if (body.length !in BODY_MAX_LENGTH downTo BODY_MIN_LENGTH) {
-            listOfError.add(NewPostErrorType.BODY_LENGTH_ERROR)
+        if (postForSaving.body.length !in BODY_MAX_LENGTH downTo BODY_MIN_LENGTH) {
+            setOfError.add(NewPostErrorType.BODY_LENGTH_ERROR)
         }
 
-        //TODO!!! BANNED WORD FROM RESOURCES
-        if (title.contains("buy", true) || title.contains("buy", true) || title.contains("buy", true)) {
-            listOfError.add(NewPostErrorType.FORBIDDEN_WORDS_ERROR)
+        if (checkForbiddenWords(postForSaving.title)) {
+            setOfError.add(NewPostErrorType.FORBIDDEN_WORDS_ERROR)
         }
 
-        return listOfError
+        if (setOfError.isEmpty()){
+            savePostUseCase.savePost(postForSaving)
+        }
+
+        return setOfError
     }
 
-}
-
-enum class NewPostErrorType {
-    BODY_LENGTH_ERROR,
-    TITLE_LENGTH_ERROR,
-    FORBIDDEN_WORDS_ERROR
+    private fun checkForbiddenWords(title: String): Boolean{
+        for (word in resource.getStringArray(R.array.forbidden_words)){
+            if (title.contains(word, true)){
+                return true
+            }
+        }
+        return false
+    }
 }

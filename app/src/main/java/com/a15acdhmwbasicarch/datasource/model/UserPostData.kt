@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
 @Entity
-data class UserPostResponse(
+data class UserPostData(
     @SerializedName("userId")
     val userId: Int,
     @SerializedName("id")

@@ -1,3 +1,5 @@
 package com.a15acdhmwbasicarch.domain.model
 
-data class NewPostModel()
+import java.util.*
+
+data class NewPostModel(val title: String, val body: String)

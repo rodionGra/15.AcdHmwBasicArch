@@ -1,4 +1,6 @@
-package com.a15acdhmwbasicarch.domain
+package com.a15acdhmwbasicarch.domain.model
+
+import com.a15acdhmwbasicarch.domain.Status
 
 data class UserPostDomainModel(
         val userId: Int,

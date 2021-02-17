@@ -5,7 +5,7 @@ import com.a15acdhmwbasicarch.presentation.PostUiMapper
 import com.a15acdhmwbasicarch.presentation.PostUiModel
 import javax.inject.Inject
 
-class GetPostUseCase @Inject constructor(
+class GetAllPostsUseCase @Inject constructor(
     private val postRepository: PostsInfoRepository,
     private val postUiMapper: PostUiMapper
 ) {

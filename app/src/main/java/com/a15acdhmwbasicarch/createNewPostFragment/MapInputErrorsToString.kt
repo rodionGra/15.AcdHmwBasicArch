@@ -1,4 +1,4 @@
-package com.a15acdhmwbasicarch.showPostsFragment
+package com.a15acdhmwbasicarch.createNewPostFragment
 
 import com.a15acdhmwbasicarch.AndroidResourceRepository
 import com.a15acdhmwbasicarch.R
