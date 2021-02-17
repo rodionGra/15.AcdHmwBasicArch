@@ -1,15 +1,17 @@
 package com.a15acdhmwbasicarch.createNewPostFragment
 
-import com.a15acdhmwbasicarch.datasource.PostsCacheDataSource
+import com.a15acdhmwbasicarch.AndroidResourceRepository
+import com.a15acdhmwbasicarch.data.PostsInfoRepository
+import javax.inject.Inject
 
 const val TITLE_MIN_LENGTH = 2
 const val TITLE_MAX_LENGTH = 51
 const val BODY_MIN_LENGTH = 4
 const val BODY_MAX_LENGTH = 501
-const val BENNED_WORD_LIST = listOf<String>("")
 
-class AddNewPostValidationUseCase(
-    private val postsCacheDataSource: PostsCacheDataSource
+class AddNewPostValidationUseCase @Inject constructor(
+    private val postsCacheDataSource: PostsInfoRepository,
+    private val resource: AndroidResourceRepository,
 ) {
     fun execute(title: String, body: String): List<NewPostErrorType> {
         val listOfError: MutableList<NewPostErrorType> = mutableListOf()

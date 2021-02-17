@@ -1,15 +1,34 @@
 package com.a15acdhmwbasicarch.createNewPostFragment
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.a15acdhmwbasicarch.datasource.PostsCacheDataSource
+import androidx.lifecycle.viewModelScope
+import com.a15acdhmwbasicarch.domain.AddNewPostValidationUseCase
+import com.a15acdhmwbasicarch.domain.model.NewPostModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class CreateNewPostViewModel : ViewModel() {
+class CreateNewPostViewModel @Inject constructor(
+    private val validationUseCase: AddNewPostValidationUseCase,
+    private val mapInputErrorsToString: MapInputErrorsToString
+) : ViewModel() {
 
-    val validationUseCase  = AddNewPostValidationUseCase(PostsCacheDataSource)
+    val stringErrorLiveData = MutableLiveData<String>()
 
-    fun sendDataToCache(title: String, body: String){
-        val list = validationUseCase.execute(title, body)
+    fun sendDataToCache(title: String, body: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val setInputErrors = validationUseCase.execute(NewPostModel(title, body))
+            withContext(Dispatchers.Main) {
+                if (setInputErrors.isEmpty()){
+                    stringErrorLiveData.postValue("")
+                }
+                else{
+                    stringErrorLiveData.postValue(mapInputErrorsToString.map(setInputErrors))
+                }
+            }
+        }
     }
+
 }

@@ -3,8 +3,9 @@ package com.a15acdhmwbasicarch.domain
 import com.a15acdhmwbasicarch.data.PostsInfoRepository
 import com.a15acdhmwbasicarch.presentation.PostUiMapper
 import com.a15acdhmwbasicarch.presentation.PostUiModel
+import javax.inject.Inject
 
-class GetPostUseCase(
+class GetPostUseCase @Inject constructor(
     private val postRepository: PostsInfoRepository,
     private val postUiMapper: PostUiMapper
 ) {

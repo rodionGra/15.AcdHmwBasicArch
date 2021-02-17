@@ -9,4 +9,15 @@
     <string name="done">Done</string>
     <string name="et_body_hint">Enter body</string>
     <string name="et_title_hint">Enter the title</string>
+
+    <string-array name="forbidden_words">
+        <item>buy</item>
+        <item>advertising</item>
+        <item>goods</item>
+    </string-array>
+
+    <string name="body_length_error">body_length_error</string>
+    <string name="title_length_error">title_length_error</string>
+    <string name="forbidden_word">forbidden_word</string>
+    <string name="save_error">save_error</string>
 </resources>

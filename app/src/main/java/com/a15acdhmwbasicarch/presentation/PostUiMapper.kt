@@ -2,10 +2,11 @@ package com.a15acdhmwbasicarch.presentation
 
 import com.a15acdhmwbasicarch.R
 import com.a15acdhmwbasicarch.AndroidResourceRepository
-import com.a15acdhmwbasicarch.domain.UserPostDomainModel
+import com.a15acdhmwbasicarch.domain.model.UserPostDomainModel
 import com.a15acdhmwbasicarch.domain.Status
+import javax.inject.Inject
 
-class PostUiMapper(private val resourceRepository: AndroidResourceRepository) {
+class PostUiMapper @Inject constructor(private val resourceRepository: AndroidResourceRepository) {
     fun map(domainListModel: List<UserPostDomainModel>?): List<PostUiModel>? {
         return domainListModel?.let(this::getPostUiModels)
     }
@@ -40,7 +41,8 @@ class PostUiMapper(private val resourceRepository: AndroidResourceRepository) {
 
         return StandardPostUiModel(
             postId = userPostDomainModel.id,
-            userId = userPostDomainModel.userId.toString(),
+            //todo userId id was added for test
+            userId = userPostDomainModel.id.toString(),
             title = userPostDomainModel.title,
             body = userPostDomainModel.body,
             hasWarning = hasWarning,

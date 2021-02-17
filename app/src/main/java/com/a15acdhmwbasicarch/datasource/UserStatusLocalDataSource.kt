@@ -2,8 +2,9 @@ package com.a15acdhmwbasicarch.datasource
 
 import com.a15acdhmwbasicarch.data.StatusUser
 import com.a15acdhmwbasicarch.domain.Status
+import javax.inject.Inject
 
-class UserStatusLocalDataSource {
+class UserStatusLocalDataSource @Inject constructor() {
 
     private val statusSet : MutableSet<StatusUser> = mutableSetOf()
 

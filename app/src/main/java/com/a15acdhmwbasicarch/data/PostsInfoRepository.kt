@@ -1,25 +1,42 @@
 package com.a15acdhmwbasicarch.data
 
-import com.a15acdhmwbasicarch.datasource.PostsCacheDataSource
-import com.a15acdhmwbasicarch.datasource.api.InfoApiService
-import com.a15acdhmwbasicarch.datasource.model.UserPostResponse
-import com.a15acdhmwbasicarch.domain.UserPostDomainModel
+import com.a15acdhmwbasicarch.datasource.api.PostsReposApi
+import com.a15acdhmwbasicarch.datasource.db.PostsDao
+import com.a15acdhmwbasicarch.datasource.model.UserPostData
+import com.a15acdhmwbasicarch.domain.model.UserPostDomainModel
+import javax.inject.Inject
 
-class PostsInfoRepository(
-    private val infoApiService: InfoApiService,
+class PostsInfoRepository @Inject constructor(
+    private val infoApiService: PostsReposApi,
     private val domainUserPostMapper: DomainUserPostMapper,
-    private val postsCacheDataSource: PostsCacheDataSource
+    private val postsCacheDataSource: PostsDao
 ) {
     fun getInfo(): List<UserPostDomainModel>? {
-        //todo clean up list from back
-        val listOfPostUserInfo : List<UserPostResponse>? = infoApiService.getPostsList().execute().body()
+        val resultList: MutableList<UserPostDomainModel> = mutableListOf()
 
-        //todo clean up list from cache
-        val result: MutableList<UserPostResponse> = mutableListOf()
-        result.addAll(postsCacheDataSource.getListPostsUserCacheData())
-        listOfPostUserInfo?.let { result.addAll(it) }
+        getPostsFromApi().let { list ->
+            list?.forEach {
+                postsCacheDataSource.insertPost(it)
+            }
+        }
 
-        return result.toList().let(domainUserPostMapper::map)
+        resultList.addAll(getPostsFromCache() ?: emptyList())
+
+        return resultList
+    }
+
+    fun putNewPost(post : UserPostData){
+        postsCacheDataSource.insertPost(post)
+    }
+
+    fun getNewPostId() = postsCacheDataSource.getMaxPostId() + 1
+
+    private fun getPostsFromApi(): List<UserPostData>? {
+        return infoApiService.getPostsList().execute().body()
+    }
+
+    private fun getPostsFromCache(): List<UserPostDomainModel>? {
+        return domainUserPostMapper.map(postsCacheDataSource.getAllUsersFromDB())
     }
 }
 

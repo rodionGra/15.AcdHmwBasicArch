@@ -1,16 +1,19 @@
 package com.a15acdhmwbasicarch.data
 
-import com.a15acdhmwbasicarch.datasource.model.UserPostResponse
-import com.a15acdhmwbasicarch.domain.UserPostDomainModel
+import com.a15acdhmwbasicarch.datasource.UserStatusLocalDataSource
+import com.a15acdhmwbasicarch.datasource.model.UserPostData
+import com.a15acdhmwbasicarch.domain.model.UserPostDomainModel
 import com.a15acdhmwbasicarch.domain.Status
+import javax.inject.Inject
 
-class DomainUserPostMapper(private val statusList: Set<StatusUser>) {
+class DomainUserPostMapper @Inject constructor(private val statusList: UserStatusLocalDataSource) {
+
     fun map(
-        postResponse: List<UserPostResponse>?,
+        postData: List<UserPostData>?,
     ): List<UserPostDomainModel>? {
-        return postResponse?.let {
+        return postData?.let {
             val resultList = mutableListOf<UserPostDomainModel>()
-            postResponse.forEach { userPostResponse ->
+            postData.forEach { userPostResponse ->
                 val userStatusById = getStatusFromStatusSet(userPostResponse.userId)
                 resultList.add(getUserPostDomainModel(userPostResponse, userStatusById))
             }
@@ -19,18 +22,18 @@ class DomainUserPostMapper(private val statusList: Set<StatusUser>) {
     }
 
     private fun getStatusFromStatusSet(userId: Int): Status {
-        return statusList.find { it.idUser == userId }?.status ?: Status.STANDARD
+        return statusList.getSetOfStatusUser().find { it.idUser == userId }?.status ?: Status.STANDARD
     }
 
     private fun getUserPostDomainModel(
-        userPostResponse: UserPostResponse,
+        userPostData: UserPostData,
         status: Status = Status.STANDARD
     ): UserPostDomainModel {
         return UserPostDomainModel(
-            userId = userPostResponse.userId,
-            id = userPostResponse.id,
-            title = userPostResponse.title,
-            body = userPostResponse.body,
+            userId = userPostData.userId,
+            id = userPostData.id,
+            title = userPostData.title,
+            body = userPostData.body,
             status = status
         )
     }
