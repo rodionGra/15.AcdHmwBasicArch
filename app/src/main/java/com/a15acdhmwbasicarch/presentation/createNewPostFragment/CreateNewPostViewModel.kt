@@ -1,4 +1,4 @@
-package com.a15acdhmwbasicarch.createNewPostFragment
+package com.a15acdhmwbasicarch.presentation.createNewPostFragment
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel

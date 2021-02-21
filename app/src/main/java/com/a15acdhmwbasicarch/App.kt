@@ -8,7 +8,7 @@ import com.a15acdhmwbasicarch.di.RoomModule
 
 class App : Application() {
 
-    lateinit var daggerComponent: AppComponent
+    private lateinit var daggerComponent: AppComponent
 
     override fun onCreate() {
         super.onCreate()

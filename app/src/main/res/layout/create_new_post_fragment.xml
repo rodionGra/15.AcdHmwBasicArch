@@ -7,34 +7,54 @@
     android:background="@color/white"
     android:clickable="true"
     android:focusable="true"
-    tools:context=".createNewPostFragment.CreateNewPostFragment">
+    tools:context=".presentation.createNewPostFragment.CreateNewPostFragment">
 
-    <EditText
-        android:id="@+id/et_title"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="12dp"
-        android:layout_marginTop="50dp"
-        android:autofillHints="@string/et_title_hint"
-        android:background="@color/teal_200"
-        android:inputType="textCapWords"
+        android:layout_marginHorizontal="@dimen/crate_new_post_fragment_til_marginHorizontal"
+        android:layout_marginTop="@dimen/crate_new_post_fragment_til_title_marginTop"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
 
+        <EditText
+            android:id="@+id/et_title"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:ems="10"
+            android:hint="@string/et_title_hint"
+            android:inputType="textCapWords"
+            android:importantForAutofill="no" />
 
-    <EditText
-        android:id="@+id/et_body"
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_body"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="12dp"
-        android:layout_marginTop="50dp"
-        android:autofillHints="@string/et_body_hint"
-        android:background="@color/teal_200"
-        android:inputType="textCapWords"
+        android:layout_marginHorizontal="@dimen/crate_new_post_fragment_til_marginHorizontal"
+        android:layout_marginTop="@dimen/crate_new_post_fragment_til_body_marginTop"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/et_title" />
+        app:layout_constraintTop_toBottomOf="@id/til_title">
+
+        <EditText
+            android:id="@+id/et_body"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:ems="10"
+            android:hint="@string/et_body_hint"
+            android:inputType="textCapWords"
+            android:importantForAutofill="no" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
 
     <Button
         android:id="@+id/btn_add_new_post"
@@ -51,9 +71,9 @@
         android:id="@+id/tv_input_errors"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/et_body"
+        app:layout_constraintBottom_toTopOf="@id/btn_add_new_post"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/btn_add_new_post"/>
+        app:layout_constraintTop_toBottomOf="@id/til_body" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

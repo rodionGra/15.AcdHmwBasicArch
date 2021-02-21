@@ -1,7 +1,6 @@
 package com.a15acdhmwbasicarch.di
 
 import android.content.Context
-import com.a15acdhmwbasicarch.data.PostsInfoRepository
 import com.a15acdhmwbasicarch.datasource.api.PostsReposApi
 import com.google.gson.GsonBuilder
 import dagger.Module
@@ -14,7 +13,7 @@ import javax.inject.Singleton
 class AppModule(val context: Context) {
 
     @Singleton
-    @Provides //todo scope is not necessary for parameters stored within the module
+    @Provides
     fun context(): Context {
         return context
     }
@@ -38,15 +37,8 @@ class AppModule(val context: Context) {
 
     @Provides
     @Singleton
-    fun provideGitHubReposApi(retrofit: Retrofit): PostsReposApi {
+    fun providePostsReposApi(retrofit: Retrofit): PostsReposApi {
         return retrofit.create(PostsReposApi::class.java)
     }
-
-    //todo singleton repository if necessary
-    /*@Provides
-    @Singleton
-    fun providePostRepository(): PostsInfoRepository{
-        return PostsInfoRepository()
-    }*/
 
 }

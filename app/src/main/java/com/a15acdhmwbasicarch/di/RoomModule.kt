@@ -15,7 +15,7 @@ class RoomModule(mApplication: Application) {
     @Singleton
     @Provides
     fun providesRoomDatabase(): PostDataBase {
-        return demoDatabase
+        return postsDatabase
     }
 
     @Singleton
@@ -25,7 +25,7 @@ class RoomModule(mApplication: Application) {
     }
 
     @Singleton
-    private val demoDatabase: PostDataBase =
-        Room.databaseBuilder(mApplication, PostDataBase::class.java, "posts-db2").build()
+    private val postsDatabase: PostDataBase =
+        Room.databaseBuilder(mApplication, PostDataBase::class.java, "posts-db").build()
 
 }

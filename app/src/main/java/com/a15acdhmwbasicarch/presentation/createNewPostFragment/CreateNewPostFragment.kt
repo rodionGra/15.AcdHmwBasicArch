@@ -1,4 +1,4 @@
-package com.a15acdhmwbasicarch.createNewPostFragment
+package com.a15acdhmwbasicarch.presentation.createNewPostFragment
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.a15acdhmwbasicarch.App
 import com.a15acdhmwbasicarch.databinding.CreateNewPostFragmentBinding
+import com.a15acdhmwbasicarch.tools.hideKeyboard
 import javax.inject.Inject
 
 class CreateNewPostFragment : Fragment() {
@@ -43,6 +44,7 @@ class CreateNewPostFragment : Fragment() {
         viewModel.stringErrorLiveData.observe(viewLifecycleOwner){
             if (it.isEmpty()){
                 closeCurrentFragment()
+                this.hideKeyboard()
             }
             else{
                 binding.tvInputErrors.text = it

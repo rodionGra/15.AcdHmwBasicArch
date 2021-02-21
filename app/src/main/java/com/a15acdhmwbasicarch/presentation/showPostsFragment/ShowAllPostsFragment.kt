@@ -1,7 +1,6 @@
-package com.a15acdhmwbasicarch.showPostsFragment
+package com.a15acdhmwbasicarch.presentation.showPostsFragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,10 +10,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.a15acdhmwbasicarch.App
 import com.a15acdhmwbasicarch.R
-import com.a15acdhmwbasicarch.createNewPostFragment.CreateNewPostFragment
+import com.a15acdhmwbasicarch.presentation.createNewPostFragment.CreateNewPostFragment
 import com.a15acdhmwbasicarch.databinding.ShowAllPostsFragmentBinding
-import com.a15acdhmwbasicarch.di.AppModule
-import com.a15acdhmwbasicarch.di.DaggerAppComponent
 import com.a15acdhmwbasicarch.presentation.PostRecycleViewAdapter
 import com.a15acdhmwbasicarch.presentation.PostUiModel
 import javax.inject.Inject
@@ -39,21 +36,20 @@ class ShowAllPostsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val app = requireActivity().application as App
-        app.getComponent().inject(this)
-
-        observeGitHubRepos()
+        setupDi()
+        observeLiveData()
         setupListeners()
         setupRecyclerView()
+        setupData()
     }
 
-    override fun onResume() {
-        super.onResume()
-        viewModel.getPosts()
+    private fun setupDi(){
+        val app = requireActivity().application as App
+        app.getComponent().inject(this)
     }
 
-    private fun observeGitHubRepos() {
-        viewModel.reposLiveData.observe(viewLifecycleOwner, {
+    private fun observeLiveData() {
+        viewModel.postsLiveData.observe(viewLifecycleOwner, {
             updatePostsRecyclerView(it)
             binding.progress.visibility = View.GONE
         })
@@ -85,6 +81,10 @@ class ShowAllPostsFragment : Fragment() {
         binding.btnCreateNewPost.setOnClickListener {
             startAddNewPostFragment()
         }
+    }
+
+    private fun setupData(){
+        viewModel.getPosts()
     }
 
     private fun startAddNewPostFragment() {

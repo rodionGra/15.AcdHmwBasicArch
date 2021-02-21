@@ -3,10 +3,12 @@ package com.a15acdhmwbasicarch.datasource
 import com.a15acdhmwbasicarch.data.StatusUser
 import com.a15acdhmwbasicarch.domain.Status
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class UserStatusLocalDataSource @Inject constructor() {
 
-    private val statusSet : MutableSet<StatusUser> = mutableSetOf()
+    private val statusSet: MutableSet<StatusUser> = mutableSetOf()
 
     private fun setupHardCode() {
         statusSet.add(StatusUser(3, Status.WITH_WARNING))

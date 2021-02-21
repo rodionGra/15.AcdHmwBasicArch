@@ -1,6 +1,7 @@
 package com.a15acdhmwbasicarch.domain
 
 import com.a15acdhmwbasicarch.data.PostsInfoRepository
+import com.a15acdhmwbasicarch.datasource.model.AddedFrom
 import com.a15acdhmwbasicarch.datasource.model.UserPostData
 import com.a15acdhmwbasicarch.domain.model.NewPostModel
 import javax.inject.Inject
@@ -13,6 +14,12 @@ class SavePostUseCase @Inject constructor(
     }
 
     private fun mapNewPostToDataPostModel(postForSaving: NewPostModel) =
-        UserPostData(100, repository.getNewPostId(), postForSaving.title, postForSaving.body)
+        UserPostData(
+            555,
+            repository.getNewPostId(),
+            postForSaving.title,
+            postForSaving.body,
+            AddedFrom.USER
+        )
 
 }
