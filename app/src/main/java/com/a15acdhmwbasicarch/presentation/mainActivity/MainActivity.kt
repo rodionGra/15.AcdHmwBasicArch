@@ -1,13 +1,17 @@
 package com.a15acdhmwbasicarch.presentation.mainActivity
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.a15acdhmwbasicarch.App
 import com.a15acdhmwbasicarch.R
 import com.a15acdhmwbasicarch.databinding.ActivityMainBinding
 import com.a15acdhmwbasicarch.presentation.showPostsFragment.ShowAllPostsFragment
 import javax.inject.Inject
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -24,19 +28,20 @@ class MainActivity : AppCompatActivity() {
         observeError()
         setupBinding()
         setupBasicFragment()
+
     }
 
-    private fun setupInjection(){
+    private fun setupInjection() {
         val app = this.application as App
         app.getComponent().inject(this)
     }
 
-    private fun updateLocalStorage(){
+    private fun updateLocalStorage() {
         viewModel.updateRepo()
     }
 
-    private fun observeError(){
-        viewModel.errorLiveData.observe(this,  {
+    private fun observeError() {
+        viewModel.errorLiveData.observe(this, {
             showError()
         })
     }
@@ -52,7 +57,7 @@ class MainActivity : AppCompatActivity() {
             .commit()
     }
 
-    private fun showError(){
+    private fun showError() {
         Toast.makeText(this, R.string.error_text, Toast.LENGTH_LONG).show()
     }
 }
