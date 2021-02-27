@@ -43,7 +43,7 @@ class ShowAllPostsFragment : Fragment() {
         setupData()
     }
 
-    private fun setupDi(){
+    private fun setupDi() {
         val app = requireActivity().application as App
         app.getComponent().inject(this)
     }
@@ -57,14 +57,13 @@ class ShowAllPostsFragment : Fragment() {
 
     private fun setupRecyclerView() {
         binding.rvPosts.apply {
-            layoutManager =
-                LinearLayoutManager(
-                    this@ShowAllPostsFragment.context,
-                    LinearLayoutManager.VERTICAL,
-                    false
-                )
+            layoutManager = LinearLayoutManager(
+                this@ShowAllPostsFragment.context,
+                LinearLayoutManager.VERTICAL,
+                false
+            )
             adapter = postRecycleViewAdapter
-            addItemDecoration(
+            this.addItemDecoration(
                 DividerItemDecoration(
                     this@ShowAllPostsFragment.context,
                     RecyclerView.VERTICAL
@@ -83,7 +82,7 @@ class ShowAllPostsFragment : Fragment() {
         }
     }
 
-    private fun setupData(){
+    private fun setupData() {
         viewModel.getPosts()
     }
 

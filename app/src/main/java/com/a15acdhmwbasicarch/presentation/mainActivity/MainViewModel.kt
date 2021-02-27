@@ -19,6 +19,7 @@ class MainViewModel @Inject constructor(
 
     fun updateRepo(){
         viewModelScope.launch(Dispatchers.IO) {
+            Thread.sleep(5_000L)
             val isUpdate = repository.updateLocalStorage()
             withContext(Dispatchers.Main) {
                 if (!isUpdate){
@@ -26,6 +27,9 @@ class MainViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    fun updateRepo2(){
 
     }
 }
