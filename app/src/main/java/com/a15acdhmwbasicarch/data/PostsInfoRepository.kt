@@ -8,6 +8,11 @@ import com.a15acdhmwbasicarch.domain.model.UserPostDomainModel
 import com.a15acdhmwbasicarch.tools.DataLoadingException
 import io.reactivex.Completable
 import io.reactivex.Flowable
+import io.reactivex.Observable
+import io.reactivex.Single
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 import java.util.*
 import java.util.concurrent.locks.ReentrantLock
 import javax.inject.Inject
@@ -27,7 +32,6 @@ class PostsInfoRepository @Inject constructor(
     fun getPostsFromLocalStorage(): Flowable<List<UserPostDomainModel>> {
         while (true) {
             if (!localStorageLock.isLocked) {
-                //add map
                 return postsCacheDataSource.getAllUsersFromDB().map(domainUserPostMapper::map)
             }
         }
@@ -37,14 +41,20 @@ class PostsInfoRepository @Inject constructor(
         localStorageLock.lock()
 
         val emitter = Completable.create { emitter ->
-            val postFromApi = getPostsFromApi()
-            if (postFromApi != null) {
-                postsCacheDataSource.insertAll(*toDbMapper.map(postFromApi).toTypedArray())
-
-                emitter.onComplete()
-            } else {
-                emitter.onError(DataLoadingException("error get Posts From Api"))
-            }
+            getPostsFromApi()
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .subscribe(
+                    { listUserPostResponse ->
+                        toDbMapper.map(listUserPostResponse).forEach {
+                            postsCacheDataSource.insertPost(it)
+                        }
+                        emitter.onComplete()
+                    },
+                    {
+                        emitter.onError(it)
+                    }
+                )
         }
 
         localStorageLock.unlock()
@@ -57,12 +67,10 @@ class PostsInfoRepository @Inject constructor(
         localStorageLock.unlock()
     }
 
-    private fun getPostsFromApi(): List<UserPostResponse>? {
-        return try {
-            infoApiService.getPostsList().execute().body()
-        } catch (e: Exception) {
-            null
-        }
+    private fun getPostsFromApi(): Single<List<UserPostResponse>> {
+        return infoApiService.getPostsList()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
     }
 
     fun getNewPostId() = postsCacheDataSource.getMaxPostId() + 1
