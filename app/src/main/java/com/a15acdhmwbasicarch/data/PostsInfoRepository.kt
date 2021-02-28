@@ -5,19 +5,14 @@ import com.a15acdhmwbasicarch.datasource.db.PostsDao
 import com.a15acdhmwbasicarch.datasource.model.UserPostData
 import com.a15acdhmwbasicarch.datasource.model.UserPostResponse
 import com.a15acdhmwbasicarch.domain.model.UserPostDomainModel
-import com.a15acdhmwbasicarch.tools.DataLoadingException
 import io.reactivex.Completable
 import io.reactivex.Flowable
-import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
-import java.util.*
 import java.util.concurrent.locks.ReentrantLock
 import javax.inject.Inject
 import javax.inject.Singleton
-
 
 @Singleton
 class PostsInfoRepository @Inject constructor(

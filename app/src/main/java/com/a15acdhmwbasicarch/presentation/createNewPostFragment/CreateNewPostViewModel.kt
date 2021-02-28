@@ -29,6 +29,8 @@ class CreateNewPostViewModel @Inject constructor(
                 }
             }
         }
+
+
     }
 
 }

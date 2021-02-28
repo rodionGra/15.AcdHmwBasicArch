@@ -7,16 +7,13 @@ import io.reactivex.Flowable
 import javax.inject.Inject
 
 class GetAllPostsUseCase @Inject constructor(
-    private val postRepository: PostsInfoRepository,
-    private val sortClass: SortByAddedFromAndId
+    private val postRepository: PostsInfoRepository
 ) {
-    //add sort
-    fun invoke(): Flowable<List<UserPostDomainModel>> =
-        postRepository.getPostsFromLocalStorage().map(sortClass::sort)
-}
 
-class SortByAddedFromAndId @Inject constructor() {
-    fun sort(startList: List<UserPostDomainModel>): List<UserPostDomainModel> {
+    fun invoke(): Flowable<List<UserPostDomainModel>> =
+        postRepository.getPostsFromLocalStorage().map(::sort)
+
+    private fun sort(startList: List<UserPostDomainModel>): List<UserPostDomainModel> {
         val postsGroupedByAddedFrom = startList.groupBy { it.addedFrom }.withDefault { emptyList() }
 
         var listFromServer = postsGroupedByAddedFrom.getValue(AddedFrom.SERVER)
