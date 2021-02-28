@@ -5,6 +5,8 @@ import com.a15acdhmwbasicarch.datasource.db.PostsDao
 import com.a15acdhmwbasicarch.datasource.model.UserPostData
 import com.a15acdhmwbasicarch.datasource.model.UserPostResponse
 import com.a15acdhmwbasicarch.domain.model.UserPostDomainModel
+import com.a15acdhmwbasicarch.tools.DataLoadingException
+import io.reactivex.rxjava3.core.Completable
 import java.util.*
 import java.util.concurrent.locks.ReentrantLock
 import javax.inject.Inject
@@ -29,19 +31,23 @@ class PostsInfoRepository @Inject constructor(
         }
     }
 
-    fun updateLocalStorage(): Boolean {
+    fun updateLocalStorage(): Completable {
         localStorageLock.lock()
-        getPostsFromApi()?.let { list ->
-            toDbMapper.map(list).forEach {
-                postsCacheDataSource.insertPost(it)
-            }
 
-            localStorageLock.unlock()
-            notifyAllObservers()
-            return true
+        val emitter = Completable.create { emitter ->
+            val postFromApi = getPostsFromApi()
+            if (postFromApi != null) {
+                postsCacheDataSource.insertAll(*toDbMapper.map(postFromApi).toTypedArray())
+
+                notifyAllObservers() //todo with rx
+                emitter.onComplete()
+            } else {
+                emitter.onError(DataLoadingException("error get Posts From Api"))
+            }
         }
+
         localStorageLock.unlock()
-        return false
+        return emitter
     }
 
     fun addObserverFun(obj: Observer) {
@@ -56,6 +62,7 @@ class PostsInfoRepository @Inject constructor(
     }
 
     private fun getPostsFromApi(): List<UserPostResponse>? {
+        Thread.sleep(5_000L)
         return try {
             infoApiService.getPostsList().execute().body()
         } catch (e: Exception) {

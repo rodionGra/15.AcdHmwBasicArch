@@ -7,6 +7,7 @@ import com.a15acdhmwbasicarch.App
 import com.a15acdhmwbasicarch.R
 import com.a15acdhmwbasicarch.databinding.ActivityMainBinding
 import com.a15acdhmwbasicarch.presentation.showPostsFragment.ShowAllPostsFragment
+import com.a15acdhmwbasicarch.tools.UpdatingState
 import javax.inject.Inject
 
 
@@ -39,7 +40,14 @@ class MainActivity : AppCompatActivity() {
 
     private fun observeError() {
         viewModel.errorLiveData.observe(this, {
-            showError()
+            it?.let {
+                when (it) {
+                    UpdatingState.ERROR -> showError()
+                    UpdatingState.COMPLETED -> showSuccess()
+                    UpdatingState.LOADING -> {
+                    }
+                }
+            }
         })
     }
 
@@ -56,5 +64,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun showError() {
         Toast.makeText(this, R.string.error_text, Toast.LENGTH_LONG).show()
+    }
+
+    private fun showSuccess() {
+        Toast.makeText(this, R.string.success_text, Toast.LENGTH_LONG).show()
     }
 }
