@@ -3,15 +3,21 @@ package com.a15acdhmwbasicarch.domain
 import com.a15acdhmwbasicarch.data.PostsInfoRepository
 import com.a15acdhmwbasicarch.datasource.model.AddedFrom
 import com.a15acdhmwbasicarch.domain.model.UserPostDomainModel
+import io.reactivex.Flowable
 import javax.inject.Inject
 
 class GetAllPostsUseCase @Inject constructor(
     private val postRepository: PostsInfoRepository,
+    private val sortClass: SortByAddedFromAndId
 ) {
-    fun invoke(): List<UserPostDomainModel> {
+    //add sort
+    fun invoke(): Flowable<List<UserPostDomainModel>> =
+        postRepository.getPostsFromLocalStorage().map(sortClass::sort)
+}
 
-        val postsGroupedByAddedFrom =
-            postRepository.getPostsFromLocalStorage().groupBy { it.addedFrom }.withDefault { emptyList() }
+class SortByAddedFromAndId @Inject constructor() {
+    fun sort(startList: List<UserPostDomainModel>): List<UserPostDomainModel> {
+        val postsGroupedByAddedFrom = startList.groupBy { it.addedFrom }.withDefault { emptyList() }
 
         var listFromServer = postsGroupedByAddedFrom.getValue(AddedFrom.SERVER)
         listFromServer = listFromServer.sortedBy { it.id }

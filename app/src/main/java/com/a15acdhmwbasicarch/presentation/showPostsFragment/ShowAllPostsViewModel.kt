@@ -1,40 +1,35 @@
 package com.a15acdhmwbasicarch.presentation.showPostsFragment
 
+import android.annotation.SuppressLint
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.a15acdhmwbasicarch.data.PostsInfoRepository
 import com.a15acdhmwbasicarch.domain.GetAllPostsUseCase
 import com.a15acdhmwbasicarch.presentation.PostUiMapper
 import com.a15acdhmwbasicarch.presentation.PostUiModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import java.util.*
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 class ShowAllPostsViewModel @Inject constructor(
     private val allPostsUseCase: GetAllPostsUseCase,
-    postsInfoRepository: PostsInfoRepository,
     private val postUiMapper: PostUiMapper
-) : ViewModel(), Observer {
-
-    init {
-        postsInfoRepository.addObserverFun(this)
-    }
+) : ViewModel() {
 
     private val _postsLiveData = MutableLiveData<List<PostUiModel>>()
     val postsLiveData: LiveData<List<PostUiModel>>
         get() = _postsLiveData
 
+    @SuppressLint("CheckResult")
     fun getPosts() {
-        viewModelScope.launch(Dispatchers.IO) {
-            val listPostsUiModel = postUiMapper.map(allPostsUseCase.invoke())
-            _postsLiveData.postValue(listPostsUiModel)
-        }
-    }
-
-    override fun update(o: Observable?, arg: Any?) {
-        getPosts()
+        allPostsUseCase.invoke()
+            .subscribeOn(Schedulers.io())
+            .observeOn(Schedulers.computation())
+            .map(postUiMapper::map)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe{
+                _postsLiveData.value = it
+            }
     }
 }

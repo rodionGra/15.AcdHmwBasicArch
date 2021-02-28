@@ -5,12 +5,13 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.a15acdhmwbasicarch.datasource.model.UserPostData
+import io.reactivex.Flowable
 
 @Dao
 interface PostsDao {
 
     @Query("SELECT * FROM UserPostData")
-    fun getAllUsersFromDB(): List<UserPostData>
+    fun getAllUsersFromDB(): Flowable<List<UserPostData>>
 
     @Query("SELECT MAX(id) FROM UserPostData")
     fun getMaxPostId(): Int

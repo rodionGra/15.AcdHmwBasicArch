@@ -6,6 +6,7 @@ import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
 import retrofit2.Retrofit
+import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
@@ -23,6 +24,7 @@ class AppModule(val context: Context) {
     fun provideRetrofit(gsonConverterFactory: GsonConverterFactory): Retrofit {
         return Retrofit.Builder()
             .baseUrl("https://jsonplaceholder.typicode.com/")
+            .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
             .addConverterFactory(gsonConverterFactory)
             .build()
     }
