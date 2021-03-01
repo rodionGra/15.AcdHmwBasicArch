@@ -19,9 +19,6 @@ interface PostsDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertPost(userPostData: UserPostData)
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertPostLoc(userPostData: UserPostData)
-
     @Insert
     fun insertAll(vararg userPostData: UserPostData)
 }
