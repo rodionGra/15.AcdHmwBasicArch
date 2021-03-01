@@ -1,9 +1,8 @@
 package com.a15acdhmwbasicarch.domain
 
-import android.annotation.SuppressLint
 import android.util.Log
-import com.a15acdhmwbasicarch.data.AndroidResourceRepository
 import com.a15acdhmwbasicarch.R
+import com.a15acdhmwbasicarch.data.AndroidResourceRepository
 import com.a15acdhmwbasicarch.data.PostsInfoRepository
 import com.a15acdhmwbasicarch.domain.model.NewPostModel
 import io.reactivex.Single
@@ -18,11 +17,10 @@ class AddNewPostValidationUseCase @Inject constructor(
     private val postsInfoRepository: PostsInfoRepository,
     private val resource: AndroidResourceRepository,
 ) {
-    @SuppressLint("CheckResult")
-    fun execute(postForSaving: NewPostModel): Single<Set<NewPostErrorType>> {
+    fun execute(postForSaving: NewPostModel): Single<ValidationStatus<Set<NewPostErrorType>>> {
         val setOfError: MutableSet<NewPostErrorType> = mutableSetOf()
 
-        return Single.create<Set<NewPostErrorType>> {
+        return Single.create {
 
             Log.d("TAG", "STart")
 
@@ -48,9 +46,10 @@ class AddNewPostValidationUseCase @Inject constructor(
 
             if (setOfError.isEmpty()) {
                 postsInfoRepository.saveNewPostFromUser(postForSaving)
+                it.onSuccess(ValidationStatus.Normal)
             }
 
-            it.onSuccess(setOfError)
+            it.onSuccess(ValidationStatus.Error(setOfError))
         }
     }
 

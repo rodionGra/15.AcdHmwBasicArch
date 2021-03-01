@@ -7,3 +7,8 @@ enum class NewPostErrorType {
     TITLE_LENGTH_MAX_ERROR,
     FORBIDDEN_WORDS_ERROR
 }
+
+sealed class ValidationStatus<out T>{
+    object Normal : ValidationStatus<Nothing>()
+    class Error<T>(val errors : T) : ValidationStatus<T>()
+}

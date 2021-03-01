@@ -1,9 +1,11 @@
 package com.a15acdhmwbasicarch.presentation.createNewPostFragment
 
 import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.a15acdhmwbasicarch.domain.AddNewPostValidationUseCase
+import com.a15acdhmwbasicarch.domain.ValidationStatus
 import com.a15acdhmwbasicarch.domain.model.NewPostModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -16,7 +18,9 @@ class CreateNewPostViewModel @Inject constructor(
     private val compositeDispose: CompositeDisposable
 ) : ViewModel() {
 
-    val stringErrorLiveData = MutableLiveData<String>()
+    private val _stringErrorLiveData = MutableLiveData<ValidationStatus<String>>()
+    val stringErrorLiveData
+        get() = _stringErrorLiveData as LiveData<ValidationStatus<String>>
 
     fun sendDataToCache(title: String, body: String) {
         compositeDispose.add(
@@ -25,10 +29,11 @@ class CreateNewPostViewModel @Inject constructor(
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     {
-                        if (it.isEmpty()) {
-                            stringErrorLiveData.value = ""
-                        } else {
-                            stringErrorLiveData.value = mapInputErrorsToString.map(it)
+                        when (it) {
+                            is ValidationStatus.Normal -> _stringErrorLiveData.value =
+                                ValidationStatus.Normal
+                            is ValidationStatus.Error -> _stringErrorLiveData.value =
+                                ValidationStatus.Error(mapInputErrorsToString.map(it.errors))
                         }
                     },
                     {
