@@ -1,8 +1,12 @@
 package com.a15acdhmwbasicarch.domain
 
+import android.annotation.SuppressLint
+import android.util.Log
 import com.a15acdhmwbasicarch.data.AndroidResourceRepository
 import com.a15acdhmwbasicarch.R
+import com.a15acdhmwbasicarch.data.PostsInfoRepository
 import com.a15acdhmwbasicarch.domain.model.NewPostModel
+import io.reactivex.Single
 import javax.inject.Inject
 
 const val TITLE_MIN_LENGTH = 3
@@ -11,37 +15,43 @@ const val BODY_MIN_LENGTH = 5
 const val BODY_MAX_LENGTH = 500
 
 class AddNewPostValidationUseCase @Inject constructor(
+    private val postsInfoRepository: PostsInfoRepository,
     private val resource: AndroidResourceRepository,
-    private val savePostUseCase: SavePostUseCase
 ) {
-    fun execute(postForSaving: NewPostModel): Set<NewPostErrorType> {
+    @SuppressLint("CheckResult")
+    fun execute(postForSaving: NewPostModel): Single<Set<NewPostErrorType>> {
         val setOfError: MutableSet<NewPostErrorType> = mutableSetOf()
 
-        if (postForSaving.title.length < TITLE_MIN_LENGTH) {
-            setOfError.add(NewPostErrorType.TITLE_LENGTH_MIN_ERROR)
-        }
+        return Single.create<Set<NewPostErrorType>> {
 
-        if (postForSaving.title.length > TITLE_MAX_LENGTH) {
-            setOfError.add(NewPostErrorType.TITLE_LENGTH_MAX_ERROR)
-        }
+            Log.d("TAG", "STart")
 
-        if (postForSaving.body.length < BODY_MIN_LENGTH) {
-            setOfError.add(NewPostErrorType.BODY_LENGTH_MIN_ERROR)
-        }
+            if (postForSaving.title.length < TITLE_MIN_LENGTH) {
+                setOfError.add(NewPostErrorType.TITLE_LENGTH_MIN_ERROR)
+            }
 
-        if (postForSaving.body.length > BODY_MAX_LENGTH) {
-            setOfError.add(NewPostErrorType.BODY_LENGTH_MAX_ERROR)
-        }
+            if (postForSaving.title.length > TITLE_MAX_LENGTH) {
+                setOfError.add(NewPostErrorType.TITLE_LENGTH_MAX_ERROR)
+            }
 
-        if (checkForbiddenWords(postForSaving.title)) {
-            setOfError.add(NewPostErrorType.FORBIDDEN_WORDS_ERROR)
-        }
+            if (postForSaving.body.length < BODY_MIN_LENGTH) {
+                setOfError.add(NewPostErrorType.BODY_LENGTH_MIN_ERROR)
+            }
 
-        if (setOfError.isEmpty()) {
-            savePostUseCase.savePost(postForSaving)
-        }
+            if (postForSaving.body.length > BODY_MAX_LENGTH) {
+                setOfError.add(NewPostErrorType.BODY_LENGTH_MAX_ERROR)
+            }
 
-        return setOfError
+            if (checkForbiddenWords(postForSaving.title)) {
+                setOfError.add(NewPostErrorType.FORBIDDEN_WORDS_ERROR)
+            }
+
+            if (setOfError.isEmpty()) {
+                postsInfoRepository.saveNewPostFromUser(postForSaving)
+            }
+
+            it.onSuccess(setOfError)
+        }
     }
 
     private fun checkForbiddenWords(title: String): Boolean {

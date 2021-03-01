@@ -1,12 +1,15 @@
 package com.a15acdhmwbasicarch.data
 
+import android.annotation.SuppressLint
 import com.a15acdhmwbasicarch.datasource.api.PostsReposApi
 import com.a15acdhmwbasicarch.datasource.db.PostsDao
 import com.a15acdhmwbasicarch.datasource.model.UserPostData
 import com.a15acdhmwbasicarch.datasource.model.UserPostResponse
+import com.a15acdhmwbasicarch.domain.model.NewPostModel
 import com.a15acdhmwbasicarch.domain.model.UserPostDomainModel
 import io.reactivex.Completable
 import io.reactivex.Flowable
+import io.reactivex.Maybe
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -19,7 +22,8 @@ class PostsInfoRepository @Inject constructor(
     private val infoApiService: PostsReposApi,
     private val postsCacheDataSource: PostsDao,
     private val toDbMapper: PostResponseToPostDbEntityMapper,
-    private val domainUserPostMapper: DomainUserPostMapper
+    private val domainUserPostMapper: DomainUserPostMapper,
+    private val mapNewPostToDataPostModel: NewPostToDataPostMapper
 ) {
 
     private val localStorageLock = ReentrantLock()
@@ -36,7 +40,7 @@ class PostsInfoRepository @Inject constructor(
         localStorageLock.lock()
 
         val emitter = Completable.create { emitter ->
-            getPostsFromApi()
+            infoApiService.getPostsList()
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribe(
@@ -56,18 +60,18 @@ class PostsInfoRepository @Inject constructor(
         return emitter
     }
 
-    fun putNewPost(post: UserPostData) {
-        localStorageLock.lock()
-        postsCacheDataSource.insertPost(post)
-        localStorageLock.unlock()
+
+    /*//todo
+    fun getNewPostId(): Single<Int> {
+        return postsCacheDataSource.getMaxPostId().map { it + 1 }
+    }*/
+
+    private fun getNewPostId(): Int {
+        return postsCacheDataSource.getMaxPostId() + 1
     }
 
-    private fun getPostsFromApi(): Single<List<UserPostResponse>> {
-        return infoApiService.getPostsList()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
+    fun saveNewPostFromUser(postForSaving: NewPostModel) {
+        postsCacheDataSource.insertPost(mapNewPostToDataPostModel.map(postForSaving, getNewPostId()))
     }
-
-    fun getNewPostId() = postsCacheDataSource.getMaxPostId() + 1
 }
 

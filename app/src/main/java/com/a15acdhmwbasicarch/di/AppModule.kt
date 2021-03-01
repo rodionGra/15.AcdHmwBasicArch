@@ -5,6 +5,7 @@ import com.a15acdhmwbasicarch.datasource.api.PostsReposApi
 import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
+import io.reactivex.disposables.CompositeDisposable
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
@@ -44,4 +45,8 @@ class AppModule(val context: Context) {
         return retrofit.create(PostsReposApi::class.java)
     }
 
+    @Provides
+    fun provideCompositeDisposable(): CompositeDisposable{
+        return CompositeDisposable()
+    }
 }

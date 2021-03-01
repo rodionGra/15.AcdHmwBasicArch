@@ -51,7 +51,6 @@ class ShowAllPostsFragment : Fragment() {
     private fun observeLiveData() {
         viewModel.postsLiveData.observe(viewLifecycleOwner, {
             updatePostsRecyclerView(it)
-            binding.progress.visibility = View.GONE
         })
     }
 
