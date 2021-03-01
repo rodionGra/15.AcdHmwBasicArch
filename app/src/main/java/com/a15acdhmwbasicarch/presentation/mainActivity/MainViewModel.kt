@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.a15acdhmwbasicarch.data.PostsInfoRepository
+import com.a15acdhmwbasicarch.domain.ValidationStatus
 import com.a15acdhmwbasicarch.tools.UpdatingState
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -17,7 +18,8 @@ class MainViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _errorLiveData = MutableLiveData<UpdatingState>()
-    val errorLiveData: LiveData<UpdatingState> = _errorLiveData
+    val errorLiveData
+        get() = _errorLiveData as LiveData<UpdatingState>
 
     fun updateRepo() {
         compositeDisposable.add(

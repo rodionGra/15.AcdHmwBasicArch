@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.a15acdhmwbasicarch.domain.GetAllPostsUseCase
+import com.a15acdhmwbasicarch.domain.ValidationStatus
 import com.a15acdhmwbasicarch.presentation.PostUiMapper
 import com.a15acdhmwbasicarch.presentation.PostUiModel
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -18,8 +19,8 @@ class ShowAllPostsViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _postsLiveData = MutableLiveData<List<PostUiModel>>()
-    val postsLiveData: LiveData<List<PostUiModel>>
-        get() = _postsLiveData
+    val postsLiveData
+        get() = _postsLiveData as LiveData<List<PostUiModel>>
 
 
     fun getPosts() {
