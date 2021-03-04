@@ -3,19 +3,18 @@ package com.a15acdhmwbasicarch.presentation.showPostsFragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.a15acdhmwbasicarch.domain.GetAllPostsUseCase
-import com.a15acdhmwbasicarch.domain.ValidationStatus
 import com.a15acdhmwbasicarch.presentation.PostUiMapper
 import com.a15acdhmwbasicarch.presentation.PostUiModel
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class ShowAllPostsViewModel @Inject constructor(
     private val allPostsUseCase: GetAllPostsUseCase,
-    private val postUiMapper: PostUiMapper,
-    private val compositeDispose: CompositeDisposable
+    private val postUiMapper: PostUiMapper
 ) : ViewModel() {
 
     private val _postsLiveData = MutableLiveData<List<PostUiModel>>()
@@ -24,20 +23,10 @@ class ShowAllPostsViewModel @Inject constructor(
 
 
     fun getPosts() {
-        compositeDispose.add(
-            allPostsUseCase.invoke()
-                .subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.computation())
-                .map(postUiMapper::map)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe {
-                    _postsLiveData.value = it
-                }
-        )
-    }
-
-    override fun onCleared() {
-        compositeDispose.dispose()
-        super.onCleared()
+        viewModelScope.launch {
+            allPostsUseCase.invoke().map(postUiMapper::map).collect{
+                _postsLiveData.value = it
+            }
+        }
     }
 }

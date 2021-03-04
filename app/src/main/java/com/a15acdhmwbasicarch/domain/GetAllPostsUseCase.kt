@@ -3,14 +3,15 @@ package com.a15acdhmwbasicarch.domain
 import com.a15acdhmwbasicarch.data.PostsInfoRepository
 import com.a15acdhmwbasicarch.datasource.model.AddedFrom
 import com.a15acdhmwbasicarch.domain.model.UserPostDomainModel
-import io.reactivex.Flowable
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class GetAllPostsUseCase @Inject constructor(
     private val postRepository: PostsInfoRepository
 ) {
 
-    fun invoke(): Flowable<List<UserPostDomainModel>> =
+    fun invoke(): Flow<List<UserPostDomainModel>> =
         postRepository.getPostsFromLocalStorage().map(::sort)
 
     private fun sort(startList: List<UserPostDomainModel>): List<UserPostDomainModel> {
