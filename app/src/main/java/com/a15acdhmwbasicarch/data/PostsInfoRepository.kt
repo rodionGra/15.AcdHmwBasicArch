@@ -34,6 +34,8 @@ class PostsInfoRepository @Inject constructor(
                     val listToBd: List<UserPostData> = toDbMapper.map(it)
                     postsCacheDataSource.insertListPosts(listToBd)
                 }
+            }else{
+                throw Exception(response.errorBody().toString())
             }
         }
     }
