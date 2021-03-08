@@ -42,10 +42,12 @@ class PostsInfoRepository @Inject constructor(
     }
 
     private suspend fun getNewPostId(): Int {
-        return postsCacheDataSource.getMaxPostId() + 1
+        return withContext(ioDispatcher) {
+            postsCacheDataSource.getMaxPostId() + 1
+        }
     }
 
-    suspend fun saveNewPostFromUser(postForSaving: NewPostModel) {
+    suspend fun saveNewPostFromUser(postForSaving: NewPostModel) = withContext(ioDispatcher) {
         postsCacheDataSource.insertPost(
             mapNewPostToDataPostModel.map(
                 postForSaving,

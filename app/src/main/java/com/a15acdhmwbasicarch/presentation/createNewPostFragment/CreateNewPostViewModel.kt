@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.a15acdhmwbasicarch.domain.AddNewPostValidationUseCase
-import com.a15acdhmwbasicarch.domain.ValidationStatus
+import com.a15acdhmwbasicarch.domain.VerificationStatus
 import com.a15acdhmwbasicarch.domain.model.NewPostModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -15,17 +15,19 @@ class CreateNewPostViewModel @Inject constructor(
     private val mapInputErrorsToString: MapInputErrorsToString
 ) : ViewModel() {
 
-    private val _stringErrorLiveData = MutableLiveData<ValidationStatus<String>>()
+    private val _stringErrorLiveData = MutableLiveData<VerificationStatus<String>>()
     val stringErrorLiveData
-        get() = _stringErrorLiveData as LiveData<ValidationStatus<String>>
+        get() = _stringErrorLiveData as LiveData<VerificationStatus<String>>
 
     fun sendDataToCache(title: String, body: String) {
-        viewModelScope.launch {
-            when (val result = validationUseCase.execute(NewPostModel(title, body))) {
-                is ValidationStatus.Normal -> _stringErrorLiveData.value = ValidationStatus.Normal
-                is ValidationStatus.Error -> _stringErrorLiveData.value =
-                    ValidationStatus.Error(mapInputErrorsToString.map(result.errors))
-            }
+        viewModelScope.launch() {
+            _stringErrorLiveData.value =
+                when (val result = validationUseCase(NewPostModel(title, body))) {
+                    is VerificationStatus.Normal -> VerificationStatus.Normal
+                    is VerificationStatus.Error -> VerificationStatus.Error(
+                        mapInputErrorsToString(result.errors)
+                    )
+                }
         }
     }
 }

@@ -7,6 +7,7 @@ import com.a15acdhmwbasicarch.domain.Status
 import javax.inject.Inject
 
 class PostUiMapper @Inject constructor(private val resourceRepository: AndroidResourceRepository) {
+
     fun map(domainListModel: List<UserPostDomainModel>): List<PostUiModel> {
         return domainListModel.let(this::getPostUiModels)
     }

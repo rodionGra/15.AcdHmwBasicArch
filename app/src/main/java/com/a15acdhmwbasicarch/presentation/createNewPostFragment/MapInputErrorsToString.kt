@@ -10,7 +10,7 @@ class MapInputErrorsToString @Inject constructor(
     private val androidResourceRepository: AndroidResourceRepository
 ) {
 
-    fun map(listInputErrors: Set<NewPostErrorType>): String {
+    operator fun invoke(listInputErrors: Set<NewPostErrorType>): String {
         val errorString = StringBuilder()
         listInputErrors.forEach {
             errorString.append(
@@ -18,7 +18,7 @@ class MapInputErrorsToString @Inject constructor(
                     NewPostErrorType.BODY_LENGTH_MIN_ERROR -> androidResourceRepository.getString(R.string.body_length_min_error)
                     NewPostErrorType.BODY_LENGTH_MAX_ERROR -> androidResourceRepository.getString(R.string.body_length_max_error)
                     NewPostErrorType.TITLE_LENGTH_MIN_ERROR -> androidResourceRepository.getString(R.string.title_length_min_error)
-                    NewPostErrorType.TITLE_LENGTH_MAX_ERROR  -> androidResourceRepository.getString(R.string.title_length_max_error)
+                    NewPostErrorType.TITLE_LENGTH_MAX_ERROR -> androidResourceRepository.getString(R.string.title_length_max_error)
                     NewPostErrorType.FORBIDDEN_WORDS_ERROR -> androidResourceRepository.getString(R.string.forbidden_word)
                 }
             ).append("\n")

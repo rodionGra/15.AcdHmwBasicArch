@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.a15acdhmwbasicarch.App
 import com.a15acdhmwbasicarch.databinding.CreateNewPostFragmentBinding
-import com.a15acdhmwbasicarch.domain.ValidationStatus
+import com.a15acdhmwbasicarch.domain.VerificationStatus
 import com.a15acdhmwbasicarch.tools.hideKeyboard
 import javax.inject.Inject
 
@@ -44,11 +44,11 @@ class CreateNewPostFragment : Fragment() {
     private fun observeErrorInput(){
         viewModel.stringErrorLiveData.observe(viewLifecycleOwner){
             when(it){
-                is ValidationStatus.Normal -> {
+                is VerificationStatus.Normal -> {
                     closeCurrentFragment()
                     this.hideKeyboard()
                 }
-                is ValidationStatus.Error -> {
+                is VerificationStatus.Error -> {
                     binding.tvInputErrors.text = it.errors
                 }
             }

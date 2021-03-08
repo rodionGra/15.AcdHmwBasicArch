@@ -8,7 +8,7 @@ enum class NewPostErrorType {
     FORBIDDEN_WORDS_ERROR
 }
 
-sealed class ValidationStatus<out T>{
-    object Normal : ValidationStatus<Nothing>()
-    class Error<T>(val errors : T) : ValidationStatus<T>()
+sealed class VerificationStatus<out T>{
+    object Normal : VerificationStatus<Nothing>()
+    class Error<T>(val errors : T) : VerificationStatus<T>()
 }
