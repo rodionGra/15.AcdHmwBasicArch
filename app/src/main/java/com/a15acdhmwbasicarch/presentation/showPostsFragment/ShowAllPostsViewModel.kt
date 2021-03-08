@@ -10,6 +10,7 @@ import com.a15acdhmwbasicarch.presentation.PostUiMapper
 import com.a15acdhmwbasicarch.presentation.PostUiModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -26,8 +27,8 @@ class ShowAllPostsViewModel @Inject constructor(
         get() = _postsLiveData as LiveData<List<PostUiModel>>
 
     fun getPosts() {
-        viewModelScope.launch(ioDispatcher) {
-            allPostsUseCase().map(postUiMapper::map).collect {
+        viewModelScope.launch {
+            allPostsUseCase().map(postUiMapper::map).flowOn(ioDispatcher).collect {
                 _postsLiveData.postValue(it)
             }
         }
