@@ -24,7 +24,7 @@ class ShowAllPostsViewModel @Inject constructor(
 
     fun getPosts() {
         viewModelScope.launch {
-            allPostsUseCase.invoke().map(postUiMapper::map).collect{
+            allPostsUseCase().map(postUiMapper::map).collect{
                 _postsLiveData.value = it
             }
         }

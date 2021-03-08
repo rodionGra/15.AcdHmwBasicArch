@@ -18,7 +18,7 @@ class MainViewModel @Inject constructor(
     val errorLiveData
         get() = _errorLiveData as LiveData<UpdatingState>
 
-    private val handler = CoroutineExceptionHandler { _, exception ->
+    private val handler = CoroutineExceptionHandler { _, _ ->
         _errorLiveData.value = UpdatingState.ERROR
     }
 

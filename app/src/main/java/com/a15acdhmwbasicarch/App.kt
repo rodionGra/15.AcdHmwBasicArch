@@ -1,10 +1,7 @@
 package com.a15acdhmwbasicarch
 
 import android.app.Application
-import com.a15acdhmwbasicarch.di.AppComponent
-import com.a15acdhmwbasicarch.di.AppModule
-import com.a15acdhmwbasicarch.di.DaggerAppComponent
-import com.a15acdhmwbasicarch.di.RoomModule
+import com.a15acdhmwbasicarch.di.*
 
 class App : Application() {
 
@@ -16,6 +13,7 @@ class App : Application() {
         daggerComponent = DaggerAppComponent.builder()
             .appModule(AppModule(this))
             .roomModule(RoomModule(this))
+            .dispatcherModule(DispatcherModule)
             .build()
     }
 

@@ -11,7 +11,7 @@ class GetAllPostsUseCase @Inject constructor(
     private val postRepository: PostsInfoRepository
 ) {
 
-    fun invoke(): Flow<List<UserPostDomainModel>> =
+    operator fun invoke(): Flow<List<UserPostDomainModel>> =
         postRepository.getPostsFromLocalStorage().map(::sort)
 
     private fun sort(startList: List<UserPostDomainModel>): List<UserPostDomainModel> {
