@@ -10,6 +10,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -26,7 +27,7 @@ class PostsInfoRepository @Inject constructor(
 ) {
 
     fun getPostsFromLocalStorage(): Flow<List<UserPostDomainModel>> {
-        return postsCacheDataSource.getAllUsersFromDB().map(domainUserPostMapper::map)
+        return postsCacheDataSource.getAllUsersFromDB().flowOn(ioDispatcher).map(domainUserPostMapper::map)
     }
 
     suspend fun updateLocalStorage() = withContext(ioDispatcher) {
