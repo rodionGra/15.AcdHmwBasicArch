@@ -20,7 +20,7 @@ class CreateNewPostViewModel @Inject constructor(
         get() = _stringErrorLiveData as LiveData<VerificationStatus<String>>
 
     fun sendDataToCache(title: String, body: String) {
-        viewModelScope.launch() {
+        viewModelScope.launch {
             _stringErrorLiveData.value =
                 when (val result = validationUseCase(NewPostModel(title, body))) {
                     is VerificationStatus.Normal -> VerificationStatus.Normal
