@@ -27,7 +27,7 @@ class PostsInfoRepository @Inject constructor(
 ) {
 
     fun getPostsFromLocalStorage(): Flow<List<UserPostDomainModel>> {
-        return postsCacheDataSource.getAllUsersFromDB().flowOn(ioDispatcher).map(domainUserPostMapper::map)
+        return postsCacheDataSource.getAllUsersFromDB().map(domainUserPostMapper::map).flowOn(ioDispatcher)
     }
 
     suspend fun updateLocalStorage() = withContext(ioDispatcher) {
