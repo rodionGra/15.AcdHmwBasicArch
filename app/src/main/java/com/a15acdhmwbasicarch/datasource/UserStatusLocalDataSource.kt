@@ -1,7 +1,7 @@
 package com.a15acdhmwbasicarch.datasource
 
-import com.a15acdhmwbasicarch.data.StatusUser
-import com.a15acdhmwbasicarch.domain.Status
+import com.a15acdhmwbasicarch.datasource.model.StatusUser
+import com.a15acdhmwbasicarch.domain.PostStatus
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -11,9 +11,9 @@ class UserStatusLocalDataSource @Inject constructor() {
     private val statusSet: MutableSet<StatusUser> = mutableSetOf()
 
     private fun setupHardCode() {
-        statusSet.add(StatusUser(3, Status.WITH_WARNING))
-        statusSet.add(StatusUser(4, Status.WITH_WARNING))
-        statusSet.add(StatusUser(7, Status.BANNED))
+        statusSet.add(StatusUser(3, PostStatus.WITH_WARNING))
+        statusSet.add(StatusUser(4, PostStatus.WITH_WARNING))
+        statusSet.add(StatusUser(7, PostStatus.BANNED))
     }
 
     fun addStatusUser(statusUser: StatusUser) = statusSet.add(statusUser)

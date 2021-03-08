@@ -3,7 +3,7 @@ package com.a15acdhmwbasicarch.data
 import com.a15acdhmwbasicarch.datasource.UserStatusLocalDataSource
 import com.a15acdhmwbasicarch.datasource.model.UserPostData
 import com.a15acdhmwbasicarch.domain.model.UserPostDomainModel
-import com.a15acdhmwbasicarch.domain.Status
+import com.a15acdhmwbasicarch.domain.PostStatus
 import javax.inject.Inject
 
 class DomainUserPostMapper @Inject constructor(private val statusList: UserStatusLocalDataSource) {
@@ -19,21 +19,21 @@ class DomainUserPostMapper @Inject constructor(private val statusList: UserStatu
         }
     }
 
-    private fun getStatusFromStatusSet(userId: Int): Status {
-        return statusList.getSetOfStatusUser().find { it.idUser == userId }?.status
-            ?: Status.STANDARD
+    private fun getStatusFromStatusSet(userId: Int): PostStatus {
+        return statusList.getSetOfStatusUser().find { it.idUser == userId }?.postStatus
+            ?: PostStatus.STANDARD
     }
 
     private fun getUserPostDomainModel(
         userPostData: UserPostData,
-        status: Status
+        postStatus: PostStatus
     ): UserPostDomainModel {
         return UserPostDomainModel(
             userId = userPostData.userId,
             id = userPostData.id,
             title = userPostData.title,
             body = userPostData.body,
-            status = status,
+            postStatus = postStatus,
             addedFrom = userPostData.addedFrom
         )
     }

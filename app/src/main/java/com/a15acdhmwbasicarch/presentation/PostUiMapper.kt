@@ -3,10 +3,12 @@ package com.a15acdhmwbasicarch.presentation
 import com.a15acdhmwbasicarch.R
 import com.a15acdhmwbasicarch.data.AndroidResourceRepository
 import com.a15acdhmwbasicarch.domain.model.UserPostDomainModel
-import com.a15acdhmwbasicarch.domain.Status
+import com.a15acdhmwbasicarch.domain.PostStatus
 import javax.inject.Inject
 
-class PostUiMapper @Inject constructor(private val resourceRepository: AndroidResourceRepository) {
+class PostUiMapper @Inject constructor(
+    private val resourceRepository: AndroidResourceRepository
+) {
 
     fun map(domainListModel: List<UserPostDomainModel>): List<PostUiModel> {
         return domainListModel.let(this::getPostUiModels)
@@ -14,14 +16,14 @@ class PostUiMapper @Inject constructor(private val resourceRepository: AndroidRe
 
     private fun getPostUiModels(userPostDomainModel: List<UserPostDomainModel>): List<PostUiModel> {
         return userPostDomainModel.map {
-            when (it.status) {
-                Status.STANDARD -> {
+            when (it.postStatus) {
+                PostStatus.STANDARD -> {
                     getStandardPostUiModel(it)
                 }
-                Status.WITH_WARNING -> {
+                PostStatus.WITH_WARNING -> {
                     getStandardPostUiModel(it)
                 }
-                Status.BANNED -> {
+                PostStatus.BANNED -> {
                     getUserPostUiModelBanned(it)
                 }
             }
@@ -29,8 +31,8 @@ class PostUiMapper @Inject constructor(private val resourceRepository: AndroidRe
     }
 
     private fun getStandardPostUiModel(userPostDomainModel: UserPostDomainModel): StandardPostUiModel {
-        val (backgroundColor, hasWarning) = when (userPostDomainModel.status) {
-            Status.WITH_WARNING -> Pair(
+        val (backgroundColor, hasWarning) = when (userPostDomainModel.postStatus) {
+            PostStatus.WITH_WARNING -> Pair(
                 PostColors(resourceRepository.getColor(R.color.red)),
                 true
             )

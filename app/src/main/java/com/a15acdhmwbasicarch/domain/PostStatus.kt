@@ -1,6 +1,6 @@
 package com.a15acdhmwbasicarch.domain
 
-enum class Status {
+enum class PostStatus {
     STANDARD,
     WITH_WARNING,
     BANNED
