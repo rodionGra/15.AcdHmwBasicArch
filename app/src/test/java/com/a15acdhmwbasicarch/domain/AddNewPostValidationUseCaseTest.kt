@@ -6,15 +6,10 @@ import io.mockk.confirmVerified
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.TestCoroutineDispatcher
-import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Test
 
-@ExperimentalCoroutinesApi
 internal class AddNewPostValidationUseCaseTest {
-
-    private val testDispatcher = TestCoroutineDispatcher()
 
     @Test
     fun `if post verification passed then post is created`() {
@@ -28,12 +23,12 @@ internal class AddNewPostValidationUseCaseTest {
 
         val post = NewPostModel("normal title", "normal body")
 
-        testDispatcher.runBlockingTest {
+        runBlocking {
             addNewPostValidationUseCase(post)
         }
 
-        verify() {
-            testDispatcher.runBlockingTest {
+        verify {
+            runBlocking {
                 mockKPostsInfoRepository.saveNewPostFromUser(post)
             }
         }
@@ -53,12 +48,12 @@ internal class AddNewPostValidationUseCaseTest {
 
         val post = NewPostModel("normal title", "normal body")
 
-        testDispatcher.runBlockingTest {
+        runBlocking {
             addNewPostValidationUseCase(post)
         }
 
         verify(exactly = 0) {
-            testDispatcher.runBlockingTest {
+            runBlocking {
                 mockKPostsInfoRepository.saveNewPostFromUser(post)
             }
         }
