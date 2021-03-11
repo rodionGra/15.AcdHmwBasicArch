@@ -10,5 +10,5 @@ enum class NewPostErrorType {
 
 sealed class VerificationStatus<out T>{
     object Normal : VerificationStatus<Nothing>()
-    class Error<T>(val errors : T) : VerificationStatus<T>()
+    data class Error<T>(val errors : T) : VerificationStatus<T>()
 }

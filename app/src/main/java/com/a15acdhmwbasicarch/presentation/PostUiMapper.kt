@@ -33,11 +33,11 @@ class PostUiMapper @Inject constructor(
     private fun getStandardPostUiModel(userPostDomainModel: UserPostDomainModel): StandardPostUiModel {
         val (backgroundColor, hasWarning) = when (userPostDomainModel.postStatus) {
             PostStatus.WITH_WARNING -> Pair(
-                PostColors(resourceRepository.getColor(R.color.red)),
+               resourceRepository.getColor(R.color.red),
                 true
             )
             else -> Pair(
-                PostColors(resourceRepository.getColor(R.color.white)),
+                resourceRepository.getColor(R.color.white),
                 false
             )
         }
@@ -48,7 +48,7 @@ class PostUiMapper @Inject constructor(
             title = userPostDomainModel.title,
             body = userPostDomainModel.body,
             hasWarning = hasWarning,
-            colors = backgroundColor
+            backgroundColor = backgroundColor
         )
     }
 

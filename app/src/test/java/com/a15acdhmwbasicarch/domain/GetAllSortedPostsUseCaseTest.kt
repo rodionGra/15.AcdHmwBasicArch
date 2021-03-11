@@ -35,19 +35,15 @@ internal class GetAllSortedPostsUseCaseTest {
             every { getPostsFromLocalStorage() } returns currentFlow
         }
 
-        val expectedFlow = flowOf(
-            listOf(
-                UserPostDomainModel(1, 4, "title", "body", PostStatus.STANDARD, AddedFrom.USER),
-                UserPostDomainModel(1, 3, "title", "body", PostStatus.STANDARD, AddedFrom.USER),
-                UserPostDomainModel(1, 1, "title", "body", PostStatus.STANDARD, AddedFrom.SERVER),
-                UserPostDomainModel(1, 2, "title", "body", PostStatus.STANDARD, AddedFrom.SERVER),
-            )
+        val expectedFlow = listOf(
+            UserPostDomainModel(1, 4, "title", "body", PostStatus.STANDARD, AddedFrom.USER),
+            UserPostDomainModel(1, 3, "title", "body", PostStatus.STANDARD, AddedFrom.USER),
+            UserPostDomainModel(1, 1, "title", "body", PostStatus.STANDARD, AddedFrom.SERVER),
+            UserPostDomainModel(1, 2, "title", "body", PostStatus.STANDARD, AddedFrom.SERVER),
         )
 
-        val sortedFlowFromUseCase = GetAllSortedPostsUseCase(mockKRepository, testDispatcher).invoke()
-
         testDispatcher.runBlockingTest {
-            sortedFlowFromUseCase.toList() shouldBe  expectedFlow.toList()
+            GetAllSortedPostsUseCase(mockKRepository, testDispatcher)().toList() shouldBe expectedFlow
         }
     }
 

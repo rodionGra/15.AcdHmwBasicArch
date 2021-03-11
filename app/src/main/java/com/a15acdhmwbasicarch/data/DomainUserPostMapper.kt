@@ -6,7 +6,9 @@ import com.a15acdhmwbasicarch.domain.model.UserPostDomainModel
 import com.a15acdhmwbasicarch.domain.PostStatus
 import javax.inject.Inject
 
-class DomainUserPostMapper @Inject constructor(private val statusList: UserStatusLocalDataSource) {
+class DomainUserPostMapper @Inject constructor(
+    private val statusList: UserStatusLocalDataSource
+) {
 
     fun map(
         postData: List<UserPostData>,

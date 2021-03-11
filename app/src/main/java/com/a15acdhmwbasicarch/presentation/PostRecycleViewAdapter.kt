@@ -66,7 +66,7 @@ class PostRecycleViewAdapter :
                 tvUserId.text = strUserId
                 tvTitle.text = post.title
                 tvBody.text = post.body
-                standardPostItemContainer.setBackgroundColor(post.colors.backgroundColor)
+                standardPostItemContainer.setBackgroundColor(post.backgroundColor)
                 if (post.hasWarning) {
                     tvWarningText.visibility = View.VISIBLE
                 } else {

@@ -11,7 +11,6 @@ class PostResponseToPostDbEntityMapper @Inject constructor() {
     fun map(usersPostsResponseList: List<UserPostResponse>): List<UserPostData> {
         return usersPostsResponseList.map {
             UserPostData(it.userId.orZero(), it.id.orZero(), it.title, it.body, AddedFrom.SERVER)
-
         }
     }
 
