@@ -1,6 +1,5 @@
 package com.a15acdhmwbasicarch.domain
 
-import com.a15acdhmwbasicarch.CoroutineTestRule
 import com.a15acdhmwbasicarch.data.PostsInfoRepository
 import com.a15acdhmwbasicarch.datasource.model.AddedFrom
 import com.a15acdhmwbasicarch.domain.model.UserPostDomainModel
@@ -12,7 +11,6 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.runBlockingTest
-import org.junit.Rule
 import org.junit.jupiter.api.Test
 
 @ExperimentalCoroutinesApi
