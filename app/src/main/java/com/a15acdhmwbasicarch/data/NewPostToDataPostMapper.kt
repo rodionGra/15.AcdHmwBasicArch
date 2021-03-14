@@ -8,13 +8,7 @@ import javax.inject.Inject
 class NewPostToDataPostMapper @Inject constructor() {
 
     fun map(postForSaving: NewPostModel, id: Int): UserPostData {
-        return UserPostData(
-            555,
-            id,
-            postForSaving.title,
-            postForSaving.body,
-            AddedFrom.USER
-        )
+        return UserPostData(1, id, postForSaving.title, postForSaving.body, AddedFrom.USER)
     }
 
 }

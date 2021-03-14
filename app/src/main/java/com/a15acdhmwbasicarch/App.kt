@@ -1,7 +1,10 @@
 package com.a15acdhmwbasicarch
 
 import android.app.Application
-import com.a15acdhmwbasicarch.di.*
+import com.a15acdhmwbasicarch.di.AppComponent
+import com.a15acdhmwbasicarch.di.AppModule
+import com.a15acdhmwbasicarch.di.DaggerAppComponent
+import com.a15acdhmwbasicarch.di.RoomModule
 
 class App : Application() {
 

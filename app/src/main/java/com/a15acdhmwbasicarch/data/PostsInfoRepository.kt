@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
+import java.io.IOException
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -36,7 +37,7 @@ class PostsInfoRepository @Inject constructor(
                 postsCacheDataSource.insertListPosts(listToBd)
             }
         } else {
-            throw Exception(response.errorBody().toString())
+            throw IOException(response.errorBody().toString())
         }
     }
 

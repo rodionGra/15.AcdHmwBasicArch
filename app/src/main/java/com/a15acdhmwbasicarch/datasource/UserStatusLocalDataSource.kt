@@ -10,6 +10,7 @@ class UserStatusLocalDataSource @Inject constructor() {
 
     private val statusSet: MutableSet<StatusUser> = mutableSetOf()
 
+    @Suppress("MagicNumber")
     private fun setupHardCode() {
         statusSet.add(StatusUser(3, PostStatus.WITH_WARNING))
         statusSet.add(StatusUser(4, PostStatus.WITH_WARNING))
