@@ -1,33 +1,50 @@
 package com.a15acdhmwbasicarch.presentation.mainActivity
 
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.a15acdhmwbasicarch.MainCoroutineRule
 import com.a15acdhmwbasicarch.data.PostsInfoRepository
+import com.a15acdhmwbasicarch.tools.CoroutinesTestExtension
+import com.a15acdhmwbasicarch.tools.InstantExecutorExtension
+import com.a15acdhmwbasicarch.tools.getOrAwaitValueTest
+import com.a15acdhmwbasicarch.tools.UpdatingState
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import org.junit.Rule
-import org.junit.Test
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.extension.ExtendWith
+import java.io.IOException
 
 @ExperimentalCoroutinesApi
+@ExtendWith(
+    InstantExecutorExtension::class,
+    CoroutinesTestExtension::class
+)
 internal class MainViewModelTest{
 
-    @get:Rule
-    val instantTaskExecutorRule = InstantTaskExecutorRule()
-
-    @get:Rule
-    val coroutineTestRule = MainCoroutineRule()
-
     @Test
-    fun `update local storage`(){
+    fun `success update local storage`(){
         val mockKRepository = mockk<PostsInfoRepository>{
             coEvery { updateLocalStorage() } returns Unit
         }
 
         val mainViewModel = MainViewModel(mockKRepository)
+        mainViewModel.updateRepo()
 
-        //mainViewModel.updateRepo() shouldBe Unit
+        val liveDate = mainViewModel.errorLiveData.getOrAwaitValueTest()
 
-        //mainViewModel.errorLiveData.value shouldBe UpdatingState.COMPLETED
+        assertEquals(UpdatingState.COMPLETED, liveDate)
+    }
+
+    @Test
+    fun `fail update local storage`(){
+        val mockKRepository = mockk<PostsInfoRepository>{
+            coEvery { updateLocalStorage() } throws IOException()
+        }
+
+        val mainViewModel = MainViewModel(mockKRepository)
+        mainViewModel.updateRepo()
+
+        val liveDate = mainViewModel.errorLiveData.getOrAwaitValueTest()
+
+        assertEquals(UpdatingState.ERROR, liveDate)
     }
 }

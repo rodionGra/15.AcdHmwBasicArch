@@ -4,6 +4,7 @@ import com.a15acdhmwbasicarch.data.AndroidResourceRepository
 import com.a15acdhmwbasicarch.domain.model.NewPostModel
 import io.mockk.every
 import io.mockk.mockk
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.DynamicTest
 import org.junit.jupiter.api.TestFactory
 
@@ -25,7 +26,7 @@ internal class NewPostVerificationTest {
             NewPostModel("$fakeForbiddenWord title", "normal body") to VerificationStatus.Error(setOf(NewPostErrorType.FORBIDDEN_WORDS_ERROR)),
         ).map { (post, newPostStatus) ->
             DynamicTest.dynamicTest("When post is $post status should by $newPostStatus") {
-                assert(newPostVerification.verify(post) == newPostStatus)
+                assertEquals(newPostVerification.verify(post), newPostStatus)
             }
         }
     }

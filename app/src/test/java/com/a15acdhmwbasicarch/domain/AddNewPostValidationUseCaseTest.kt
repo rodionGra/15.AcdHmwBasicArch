@@ -2,10 +2,7 @@ package com.a15acdhmwbasicarch.domain
 
 import com.a15acdhmwbasicarch.data.PostsInfoRepository
 import com.a15acdhmwbasicarch.domain.model.NewPostModel
-import io.mockk.confirmVerified
-import io.mockk.every
-import io.mockk.mockk
-import io.mockk.verify
+import io.mockk.*
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
 
@@ -27,10 +24,8 @@ internal class AddNewPostValidationUseCaseTest {
             addNewPostValidationUseCase(post)
         }
 
-        verify {
-            runBlocking {
-                mockKPostsInfoRepository.saveNewPostFromUser(post)
-            }
+        coVerify {
+            mockKPostsInfoRepository.saveNewPostFromUser(post)
         }
 
         confirmVerified(mockKPostsInfoRepository)
@@ -52,10 +47,8 @@ internal class AddNewPostValidationUseCaseTest {
             addNewPostValidationUseCase(post)
         }
 
-        verify(exactly = 0) {
-            runBlocking {
-                mockKPostsInfoRepository.saveNewPostFromUser(post)
-            }
+        coVerify(exactly = 0) {
+            mockKPostsInfoRepository.saveNewPostFromUser(post)
         }
     }
 }

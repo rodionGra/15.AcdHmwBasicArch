@@ -1,4 +1,4 @@
-package com.a15acdhmwbasicarch
+package com.a15acdhmwbasicarch.tools
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -9,6 +9,7 @@ import kotlinx.coroutines.test.setMain
 import org.junit.rules.TestWatcher
 import org.junit.runner.Description
 
+/*
 @ExperimentalCoroutinesApi
 class MainCoroutineRule(
     private val dispatcher: TestCoroutineDispatcher = TestCoroutineDispatcher()
@@ -24,4 +25,4 @@ class MainCoroutineRule(
         cleanupTestCoroutines()
         Dispatchers.resetMain()
     }
-}
+}*/

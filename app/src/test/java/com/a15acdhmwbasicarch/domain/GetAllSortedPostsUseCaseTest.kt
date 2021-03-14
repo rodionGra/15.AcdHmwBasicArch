@@ -6,6 +6,7 @@ import com.a15acdhmwbasicarch.domain.model.UserPostDomainModel
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.test.TestCoroutineDispatcher
@@ -34,18 +35,16 @@ internal class GetAllSortedPostsUseCaseTest {
         }
 
         val expectedFlow = listOf(
-            listOf(
-                UserPostDomainModel(1, 4, "title", "body", PostStatus.STANDARD, AddedFrom.USER),
-                UserPostDomainModel(1, 3, "title", "body", PostStatus.STANDARD, AddedFrom.USER),
-                UserPostDomainModel(1, 1, "title", "body", PostStatus.STANDARD, AddedFrom.SERVER),
-                UserPostDomainModel(1, 2, "title", "body", PostStatus.STANDARD, AddedFrom.SERVER)
-            )
+            UserPostDomainModel(1, 4, "title", "body", PostStatus.STANDARD, AddedFrom.USER),
+            UserPostDomainModel(1, 3, "title", "body", PostStatus.STANDARD, AddedFrom.USER),
+            UserPostDomainModel(1, 1, "title", "body", PostStatus.STANDARD, AddedFrom.SERVER),
+            UserPostDomainModel(1, 2, "title", "body", PostStatus.STANDARD, AddedFrom.SERVER)
         )
 
         testDispatcher.runBlockingTest {
             assertEquals(
                 expectedFlow,
-                GetAllSortedPostsUseCase(mockKRepository, testDispatcher)().toList()
+                GetAllSortedPostsUseCase(mockKRepository, testDispatcher)().first()
             )
         }
     }
