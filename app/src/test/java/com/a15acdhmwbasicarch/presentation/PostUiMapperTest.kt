@@ -5,9 +5,9 @@ import com.a15acdhmwbasicarch.data.AndroidResourceRepository
 import com.a15acdhmwbasicarch.datasource.model.AddedFrom
 import com.a15acdhmwbasicarch.domain.PostStatus
 import com.a15acdhmwbasicarch.domain.model.UserPostDomainModel
-import io.kotlintest.shouldBe
 import io.mockk.every
 import io.mockk.mockk
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
 internal class PostUiMapperTest {
@@ -40,6 +40,6 @@ internal class PostUiMapperTest {
             BannedUserPostUiModel(postId, userId)
         )
 
-        postUiMapper.map(listStandardPostUiModel) shouldBe expectedPostUiList
+        assertEquals(expectedPostUiList , postUiMapper.map(listStandardPostUiModel))
     }
 }

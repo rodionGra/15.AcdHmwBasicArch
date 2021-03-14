@@ -13,7 +13,7 @@ class App : Application() {
         daggerComponent = DaggerAppComponent.builder()
             .appModule(AppModule(this))
             .roomModule(RoomModule(this))
-            .dispatcherModule(DispatcherModule)
+            //.dispatcherModule(DispatcherModule)
             .build()
     }
 
