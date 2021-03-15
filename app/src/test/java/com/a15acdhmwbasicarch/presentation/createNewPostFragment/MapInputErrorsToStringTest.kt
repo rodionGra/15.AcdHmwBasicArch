@@ -1,6 +1,5 @@
 package com.a15acdhmwbasicarch.presentation.createNewPostFragment
 
-import com.a15acdhmwbasicarch.R
 import com.a15acdhmwbasicarch.data.AndroidResourceRepository
 import com.a15acdhmwbasicarch.domain.NewPostErrorType
 import io.mockk.every
