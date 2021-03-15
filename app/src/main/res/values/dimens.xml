@@ -2,4 +2,9 @@
 <resources>
     <dimen name="banned_post_item_recycle_view_layoutHeight">100dp</dimen>
     <dimen name="banned_post_item_recycle_view_tv_banned_text_textSize">20sp</dimen>
+    <dimen name="activity_main_tv_download_error_textSize">24sp</dimen>
+    <dimen name="show_all_posts_fragment_tv_error_textSize">24sp</dimen>
+    <dimen name="crate_new_post_fragment_til_title_marginTop">50dp</dimen>
+    <dimen name="crate_new_post_fragment_til_body_marginTop">50dp</dimen>
+    <dimen name="crate_new_post_fragment_til_marginHorizontal">12dp</dimen>
 </resources>

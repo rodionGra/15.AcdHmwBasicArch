@@ -1,8 +1,26 @@
 <resources>
     <string name="app_name">15.AcdHmwBasicArch</string>
-    <string name="warning">Warning</string>
     <string name="ban">Тут міг бути пост юзера %1$d, але він забанений</string>
     <string name="user_id">User id : %1$s</string>
     <string name="with_warning">With warning</string>
-    <string name="error_text">Posts can`t be loaded</string>
+    <string name="error_text">Posts can`t be loaded, only local data</string>
+    <string name="success_text">Update success</string>
+    <string name="add_new_post">Add new post</string>
+    <string name="done">Done</string>
+    <string name="et_body_hint">Enter body</string>
+    <string name="et_title_hint">Enter the title</string>
+
+    <string-array name="forbidden_words">
+        <item>buy</item>
+        <item>advertising</item>
+        <item>product</item>
+    </string-array>
+
+    <string name="body_length_min_error">Body must contain at less 5 characters</string>
+    <string name="body_length_max_error">Body must contain not more than 500 characters</string>
+    <string name="title_length_min_error">Title must contain at less 3 characters</string>
+    <string name="title_length_max_error">Title must contain not more than 50 characters</string>
+    <string name="forbidden_word">Title contains forbidden words!</string>
+
+    <string name="local_storage_is_empty">Local storage is empty!</string>
 </resources>

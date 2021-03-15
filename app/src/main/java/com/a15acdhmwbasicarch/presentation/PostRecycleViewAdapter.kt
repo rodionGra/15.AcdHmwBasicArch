@@ -12,7 +12,8 @@ import com.a15acdhmwbasicarch.databinding.StandardPostItemRecycleViewBinding
 
 
 class PostUiModelDiffCallbackItem : DiffUtil.ItemCallback<PostUiModel>() {
-    override fun areItemsTheSame(oldItem: PostUiModel, newItem: PostUiModel) = oldItem.postId == newItem.postId
+    override fun areItemsTheSame(oldItem: PostUiModel, newItem: PostUiModel) =
+        oldItem.postId == newItem.postId
 
     override fun areContentsTheSame(oldItem: PostUiModel, newItem: PostUiModel) = oldItem == newItem
 }
@@ -65,17 +66,11 @@ class PostRecycleViewAdapter :
                 tvUserId.text = strUserId
                 tvTitle.text = post.title
                 tvBody.text = post.body
-            }
-
-            if (post.hasWarning) {
-                binding.apply {
+                standardPostItemContainer.setBackgroundColor(post.backgroundColor)
+                if (post.hasWarning) {
                     tvWarningText.visibility = View.VISIBLE
-                    standardPostItemContainer.setBackgroundColor(post.colors.backgroundColor)
-                }
-            } else {
-                binding.apply {
+                } else {
                     tvWarningText.visibility = View.GONE
-                    standardPostItemContainer.setBackgroundColor(post.colors.backgroundColor)
                 }
             }
         }
