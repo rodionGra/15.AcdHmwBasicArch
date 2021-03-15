@@ -12,5 +12,6 @@ class AndroidResourceRepository @Inject constructor(private val context: Context
 
     fun getString(@StringRes stringRes: Int) = context.resources.getString(stringRes)
 
-    fun getStringArray(@ArrayRes stringArrRes: Int): Array<String> = context.resources.getStringArray(stringArrRes)
+    fun getStringArray(@ArrayRes stringArrRes: Int): Array<String> =
+        context.resources.getStringArray(stringArrRes)
 }

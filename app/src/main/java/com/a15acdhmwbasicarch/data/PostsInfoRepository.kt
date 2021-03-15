@@ -11,7 +11,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
-import java.io.IOException
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -31,14 +30,8 @@ class PostsInfoRepository @Inject constructor(
 
     suspend fun updateLocalStorage() = withContext(ioDispatcher) {
         val response = infoApiService.getPostsList()
-        if (response.isSuccessful) {
-            response.body()?.let {
-                val listToBd: List<UserPostData> = toDbMapper.map(it)
-                postsCacheDataSource.insertListPosts(listToBd)
-            }
-        } else {
-            throw IOException(response.errorBody().toString())
-        }
+        val listToDb: List<UserPostData> = toDbMapper.map(response)
+        postsCacheDataSource.insertListPosts(listToDb)
     }
 
     private suspend fun getNewPostId(): Int {

@@ -2,7 +2,7 @@ package com.a15acdhmwbasicarch.presentation.createNewPostFragment
 
 import com.a15acdhmwbasicarch.data.AndroidResourceRepository
 import com.a15acdhmwbasicarch.R
-import com.a15acdhmwbasicarch.di.IoDispatcher
+import com.a15acdhmwbasicarch.di.DefaultDispatcher
 import com.a15acdhmwbasicarch.domain.NewPostErrorType
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
@@ -11,11 +11,11 @@ import javax.inject.Inject
 
 class MapInputErrorsToString @Inject constructor(
     private val androidResourceRepository: AndroidResourceRepository,
-    @IoDispatcher private val ioDispatcher: CoroutineDispatcher
+    @DefaultDispatcher private val dispatcher: CoroutineDispatcher
 ) {
 
     suspend operator fun invoke(listInputErrors: Set<NewPostErrorType>): String {
-        return withContext(ioDispatcher) {
+        return withContext(dispatcher) {
             val errorString = StringBuilder()
             listInputErrors.forEach {
                 errorString.append(
